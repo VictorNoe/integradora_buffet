@@ -4,12 +4,9 @@ id_user_type INT PRIMARY KEY NOT NULL auto_increment,
 user_type VARCHAR(50) NOT NULL
     );
 
-
-
 CREATE TABLE IF NOT EXISTS Status(
 id_status INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-description VARCHAR(100) NOT NULL);
-
+status VARCHAR(100) NOT NULL);
 
 
 CREATE TABLE IF NOT EXISTS User_info (
