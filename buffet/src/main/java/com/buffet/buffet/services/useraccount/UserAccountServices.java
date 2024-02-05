@@ -1,5 +1,6 @@
 package com.buffet.buffet.services.useraccount;
 import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
+import com.buffet.buffet.model.AuthRequest.AuthRequest;
 import com.buffet.buffet.model.Status.StatusModel;
 import com.buffet.buffet.model.Status.StatusRepository;
 import com.buffet.buffet.model.useraccount.UserAccountModel;
@@ -11,10 +12,11 @@ import com.buffet.buffet.model.usertype.UserTypeRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -67,8 +69,36 @@ public class UserAccountServices {
         }catch (Exception e){
             log.error("Error al registrar usuario",e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomResponse(e, true,
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando registrar usuario "+e.getMessage().toString()));
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando registrar usuario "+e.getMessage()));
         }
 
+    }
+    public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
+        try {
+            log.info("Auth request ->"+authRequest.toString());
+            Optional<UserAccountModel> optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
+            if (optionalUserAccount.isPresent()) {
+                boolean existsLogin = Objects.equals(optionalUserAccount.get().getPassword(), authRequest.getPassword());
+                if (existsLogin) {
+                    String accessToken="1234";
+                    UserAccountModel ua = optionalUserAccount.get();
+                    ua.setToken(accessToken);
+                    userAccountRepository.save(ua);
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.AUTHORIZATION, "Bearer "+accessToken)
+                            .body(new CustomResponse(userAccountRepository.save(ua), false, HttpStatus.OK.value(), "Sesión iniciada"));
+                } else {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                            new CustomResponse(null, true, HttpStatus.UNAUTHORIZED.value(), "Credenciales inválidas"));
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomResponse(null, true,
+                        HttpStatus.UNAUTHORIZED.value(), "El correo proporcionado no está registrado"));
+            }
+        } catch (Exception e) {
+            log.error("Error al hacer login",e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new CustomResponse(e, true, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando hacer login"));
+        }
     }
 }

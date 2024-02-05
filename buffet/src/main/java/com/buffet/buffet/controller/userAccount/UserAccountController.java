@@ -1,6 +1,7 @@
 package com.buffet.buffet.controller.userAccount;
 
 import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
+import com.buffet.buffet.model.AuthRequest.AuthRequest;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,8 @@ public class UserAccountController {
     public ResponseEntity<CustomResponse> register(@RequestBody UserDTO user) {
         return userAccountService.registerUser(user);
     }
-
+    @PostMapping(value = "/login", produces = "application/json")
+    public ResponseEntity<CustomResponse> login(@RequestBody AuthRequest authRequest) {
+        return userAccountService.login(authRequest);
+    }
 }
