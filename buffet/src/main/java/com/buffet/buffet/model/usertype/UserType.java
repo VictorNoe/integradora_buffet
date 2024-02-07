@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_type")
-public class UserTypeModel {
+public class UserType {
     @Column(name = "id_user_type")
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

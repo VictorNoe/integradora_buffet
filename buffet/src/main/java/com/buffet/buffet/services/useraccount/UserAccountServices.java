@@ -1,13 +1,13 @@
 package com.buffet.buffet.services.useraccount;
 import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
 import com.buffet.buffet.model.AuthRequest.AuthRequest;
-import com.buffet.buffet.model.Status.StatusModel;
-import com.buffet.buffet.model.Status.StatusRepository;
-import com.buffet.buffet.model.useraccount.UserAccountModel;
+import com.buffet.buffet.model.status.Status;
+import com.buffet.buffet.model.status.StatusRepository;
+import com.buffet.buffet.model.useraccount.UserAccount;
 import com.buffet.buffet.model.useraccount.UserAccountRepository;
-import com.buffet.buffet.model.userinfo.UserInfoModel;
+import com.buffet.buffet.model.userinfo.UserInfo;
 import com.buffet.buffet.model.userinfo.UserInfoRepository;
-import com.buffet.buffet.model.usertype.UserTypeModel;
+import com.buffet.buffet.model.usertype.UserType;
 import com.buffet.buffet.model.usertype.UserTypeRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -34,19 +34,19 @@ public class UserAccountServices {
     public ResponseEntity<CustomResponse> registerUser(UserDTO userdto) {
         try {
             log.info("UserDTO -> "+userdto.toString());
-            UserAccountModel userAccountModel = new UserAccountModel();
-            UserInfoModel userInfoModel = new UserInfoModel();
+            UserAccount userAccountModel = new UserAccount();
+            UserInfo userInfoModel = new UserInfo();
             if(userAccountRepository.existsByEmail(userdto.getEmail())){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El correo ya ah sido registrado"));
             }
-            Optional<UserTypeModel> userType = userTypeRepository.findByUserType(userdto.getUserType());
+            Optional<UserType> userType = userTypeRepository.findByUserType(userdto.getUserType());
             if(userType.isEmpty()){
                 log.error("Tipo de usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
             }
-            Optional<StatusModel> status = statusRepository.findByStatus("enable");
+            Optional<Status> status = statusRepository.findByStatus("enable");
             if(status.isPresent()){
 
                 userInfoModel.setFkUserType(userType.get());
@@ -76,12 +76,12 @@ public class UserAccountServices {
     public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
         try {
             log.info("Auth request ->"+authRequest.toString());
-            Optional<UserAccountModel> optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
+            Optional<UserAccount> optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
             if (optionalUserAccount.isPresent()) {
                 boolean existsLogin = Objects.equals(optionalUserAccount.get().getPassword(), authRequest.getPassword());
                 if (existsLogin) {
                     String accessToken="1234";
-                    UserAccountModel ua = optionalUserAccount.get();
+                    UserAccount ua = optionalUserAccount.get();
                     ua.setToken(accessToken);
                     userAccountRepository.save(ua);
                     return ResponseEntity.ok()

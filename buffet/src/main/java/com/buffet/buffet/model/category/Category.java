@@ -1,5 +1,4 @@
-package com.buffet.buffet.model.Status;
-
+package com.buffet.buffet.model.category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,14 +7,16 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "status")
 @Entity
-public class StatusModel {
-    @Id
-    @Column(name = "id_status", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idStatus;
+@Table(name = "Service_Categories")
+public class Category {
 
-    @Column(nullable = false)
-    private String status;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_category")
+    private Integer id;
+
+    @Column(name = "category_name")
+    private String categoryName;
+
 }

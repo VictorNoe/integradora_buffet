@@ -4,6 +4,7 @@ import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
 import com.buffet.buffet.model.AuthRequest.AuthRequest;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +18,7 @@ public class UserAccountController {
     @Autowired
     private UserAccountServices userAccountService;
     @PostMapping(value = "/register", produces = "application/json")
-    public ResponseEntity<CustomResponse> register(@RequestBody UserDTO user) {
+    public ResponseEntity<CustomResponse> register(@Valid @RequestBody UserDTO user) {
         return userAccountService.registerUser(user);
     }
     @PostMapping(value = "/login", produces = "application/json")
