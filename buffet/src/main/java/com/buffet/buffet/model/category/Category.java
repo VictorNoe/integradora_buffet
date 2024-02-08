@@ -1,8 +1,12 @@
 package com.buffet.buffet.model.category;
+import com.buffet.buffet.model.Package.Package;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,5 +22,7 @@ public class Category {
 
     @Column(name = "category_name")
     private String categoryName;
-
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Package> packages;
 }
