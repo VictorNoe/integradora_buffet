@@ -1,6 +1,6 @@
 package com.buffet.buffet.services.category;
 
-import com.buffet.buffet.category.categoryDTO.CategoryDTO;
+import com.buffet.buffet.controller.category.categoryDTO.CategoryDTO;
 import com.buffet.buffet.model.category.Category;
 import com.buffet.buffet.model.category.CategoryRepository;
 import com.buffet.buffet.utils.CustomResponse;

@@ -1,4 +1,4 @@
-package com.buffet.buffet.category.categoryDTO;
+package com.buffet.buffet.controller.category.categoryDTO;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;

@@ -1,6 +1,6 @@
-package com.buffet.buffet.category;
+package com.buffet.buffet.controller.category;
 
-import com.buffet.buffet.category.categoryDTO.CategoryDTO;
+import com.buffet.buffet.controller.category.categoryDTO.CategoryDTO;
 import com.buffet.buffet.services.category.CategoryService;
 import com.buffet.buffet.utils.CustomResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
+
     @Autowired
     private CategoryService categoryService;
     @PostMapping(value = "/addCategory", produces = "application/json")
