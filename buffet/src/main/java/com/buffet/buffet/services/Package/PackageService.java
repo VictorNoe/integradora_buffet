@@ -1,6 +1,6 @@
 package com.buffet.buffet.services.Package;
 
-import com.buffet.buffet.controller.packageController.PackageDTO.PackageDTO;
+import com.buffet.buffet.controller.Package.PackageDTO.PackageDTO;
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
 import com.buffet.buffet.model.category.Category;

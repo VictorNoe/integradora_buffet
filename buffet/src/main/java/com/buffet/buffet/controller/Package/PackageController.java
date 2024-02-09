@@ -1,6 +1,6 @@
-package com.buffet.buffet.controller.packageController;
+package com.buffet.buffet.controller.Package;
 
-import com.buffet.buffet.controller.packageController.PackageDTO.PackageDTO;
+import com.buffet.buffet.controller.Package.PackageDTO.PackageDTO;
 import com.buffet.buffet.services.Package.PackageService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
