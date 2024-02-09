@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/package")
+@CrossOrigin(origins = {"*"})
 public class PackageController {
     @Autowired
     PackageService packageService;
