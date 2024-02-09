@@ -1,6 +1,4 @@
 package com.buffet.buffet.model.category;
-
-import com.buffet.buffet.model.status.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
