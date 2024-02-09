@@ -40,7 +40,7 @@ public class UserAccountServices {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El correo ya ah sido registrado"));
             }
-            Optional<UserType> userType = userTypeRepository.findByUserType(userdto.getUserType());
+            Optional<UserType> userType = userTypeRepository.findByUserType("Public");
             if(userType.isEmpty()){
                 log.error("Tipo de usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -54,7 +54,7 @@ public class UserAccountServices {
                 userInfoModel.setLastname(userdto.getLastname());
 
                 userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
-                userAccountModel.setToken("test");
+                userAccountModel.setToken("public");
                 userAccountModel.setEmail(userdto.getEmail());
                 userAccountModel.setPassword(userdto.getPassword());
                 userAccountModel.setFkStatus(status.get());
@@ -73,6 +73,49 @@ public class UserAccountServices {
         }
 
     }
+    public ResponseEntity<CustomResponse> registerWorker(UserDTO userdto) {
+        try {
+            log.info("UserDTO -> "+userdto.toString());
+            UserAccount userAccountModel = new UserAccount();
+            UserInfo userInfoModel = new UserInfo();
+            if(userAccountRepository.existsByEmail(userdto.getEmail())){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El correo ya ah sido registrado"));
+            }
+            Optional<UserType> userType = userTypeRepository.findByUserType("Worker");
+            if(userType.isEmpty()){
+                log.error("Tipo de usuario invalido");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
+            }
+            Optional<Status> status = statusRepository.findByStatus("enable");
+            if(status.isPresent()){
+
+                userInfoModel.setFkUserType(userType.get());
+                userInfoModel.setName(userdto.getName());
+                userInfoModel.setLastname(userdto.getLastname());
+
+                userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
+                userAccountModel.setToken("worker");
+                userAccountModel.setEmail(userdto.getEmail());
+                userAccountModel.setPassword(userdto.getPassword());
+                userAccountModel.setFkStatus(status.get());
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado"));
+            }else {
+                log.error("Status inexistente");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+
+            }
+        }catch (Exception e){
+            log.error("Error al registrar usuario",e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomResponse(e, true,
+                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando registrar usuario "+e.getMessage()));
+        }
+
+    }
+
     public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
         try {
             log.info("Auth request ->"+authRequest.toString());

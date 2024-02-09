@@ -25,4 +25,8 @@ public class UserAccountController {
     public ResponseEntity<CustomResponse> login(@RequestBody AuthRequest authRequest) {
         return userAccountService.login(authRequest);
     }
+    @PostMapping(value = "/registerWorker", produces = "application/json")
+    public ResponseEntity<CustomResponse> registerWorker(@Valid @RequestBody UserDTO user) {
+        return userAccountService.registerWorker(user);
+    }
 }
