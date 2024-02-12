@@ -39,7 +39,6 @@ public class UserAccount {
     @OneToOne(optional = false)
     @JoinColumn(name = "fk_user_info", referencedColumnName = "id_user_info")
     private UserInfo fkUserInfo;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToOne(optional = false, targetEntity = Status.class)
     @JoinColumn(name = "fk_status", referencedColumnName = "id_status")
     private Status fkStatus;

@@ -2,6 +2,7 @@ package com.buffet.buffet.model.Package;
 
 import com.buffet.buffet.model.category.Category;
 import com.buffet.buffet.model.status.Status;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,10 @@ public class Package {
 
     @Column(name = "discount")
     private double discount;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "created_at")
     private Date createdAt;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "modified_at")
     private Date modifiedAt;
 

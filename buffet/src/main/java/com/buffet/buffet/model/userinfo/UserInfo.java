@@ -1,6 +1,7 @@
 package com.buffet.buffet.model.userinfo;
 
 import com.buffet.buffet.model.usertype.UserType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +23,10 @@ public class UserInfo {
     private String lastname;
     @Column(nullable = false)
     private String phone;
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(nullable = false)
     private Date createdAt;
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(nullable = true)
     private Date modified_at;
     @ManyToOne(optional = false, targetEntity = UserType.class)

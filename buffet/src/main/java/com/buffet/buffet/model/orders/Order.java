@@ -5,6 +5,7 @@ import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.paymentMethod.PaymentMethod;
 import com.buffet.buffet.model.useraccount.UserAccount;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private Integer id;
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "order_date")
     private Date orderDate;
 

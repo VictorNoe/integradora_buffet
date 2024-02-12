@@ -57,7 +57,7 @@ public class UserAccountServices {
                 userInfoModel.setFkUserType(userType.get());
                 userInfoModel.setName(userdto.getName());
                 userInfoModel.setLastname(userdto.getLastname());
-
+                userInfoModel.setPhone(userdto.getPhone());
                 userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
                 userAccountModel.setToken("public");
                 userAccountModel.setEmail(userdto.getEmail());
@@ -100,6 +100,7 @@ public class UserAccountServices {
                 userInfoModel.setFkUserType(userType.get());
                 userInfoModel.setName(userdto.getName());
                 userInfoModel.setLastname(userdto.getLastname());
+                userInfoModel.setPhone(userdto.getPhone());
 
                 userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
                 userAccountModel.setToken("worker");

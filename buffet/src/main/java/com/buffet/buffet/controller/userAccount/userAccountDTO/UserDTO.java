@@ -25,5 +25,6 @@ public class UserDTO {
     private String name;
     @NotEmpty(message = "El apellido es requerido")
     private String lastname;
-
+    @NotEmpty(message = "El telefono es requerido")
+    private String phone;
 }
