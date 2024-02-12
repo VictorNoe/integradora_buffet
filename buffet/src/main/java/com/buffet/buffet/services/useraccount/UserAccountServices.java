@@ -160,4 +160,12 @@ public class UserAccountServices {
         List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_UserType("Public");
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
     }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getInfoUser(int id) {
+        if(!userAccountRepository.existsById(id)){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Id invalido"));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.findById(id),false,200,"OK"));
+    }
 }
