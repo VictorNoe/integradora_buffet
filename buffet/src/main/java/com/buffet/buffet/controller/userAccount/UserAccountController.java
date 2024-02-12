@@ -6,6 +6,7 @@ import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,13 @@ public class UserAccountController {
     @PostMapping(value = "/registerWorker", produces = "application/json")
     public ResponseEntity<CustomResponse> registerWorker(@Valid @RequestBody UserDTO user) {
         return userAccountService.registerWorker(user);
+    }
+    @GetMapping(value = "/getWorkers", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllWorkers( ){
+        return this.userAccountService.getAllWorkers();
+    }
+    @GetMapping(value = "/getClients", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllClients( ){
+        return this.userAccountService.getAllClients();
     }
 }

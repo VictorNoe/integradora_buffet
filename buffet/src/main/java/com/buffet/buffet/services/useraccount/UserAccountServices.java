@@ -16,9 +16,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Transactional
 @Service
 @Slf4j
 public class UserAccountServices {
@@ -30,7 +35,7 @@ public class UserAccountServices {
     private UserTypeRepository userTypeRepository;
     @Autowired
     private StatusRepository statusRepository;
-
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerUser(UserDTO userdto) {
         try {
             log.info("UserDTO -> "+userdto.toString());
@@ -73,6 +78,7 @@ public class UserAccountServices {
         }
 
     }
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerWorker(UserDTO userdto) {
         try {
             log.info("UserDTO -> "+userdto.toString());
@@ -115,7 +121,7 @@ public class UserAccountServices {
         }
 
     }
-
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
         try {
             log.info("Auth request ->"+authRequest.toString());
@@ -143,5 +149,15 @@ public class UserAccountServices {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new CustomResponse(e, true, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando hacer login"));
         }
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getAllWorkers() {
+        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_UserType("Worker");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getAllClients() {
+        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_UserType("Public");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
     }
 }

@@ -31,7 +31,6 @@ public class Order {
 
     @Column(name = "address")
     private String address;
-
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
     private UserAccount userAccount;
