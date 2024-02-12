@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Optional;
-
+@Transactional
 @Service
 @Slf4j
 public class PackageService {
@@ -25,6 +27,7 @@ public class PackageService {
     CategoryRepository categoryRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerPackage(PackageDTO packageDTO){
         Package packageSave = new Package();
         Optional<Package> exist = packageRepository.findByPackageName(packageDTO.getPackageName());
@@ -57,6 +60,7 @@ public class PackageService {
         }
 
     }
+    @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.findAll(),false,200,"OK"));
     }

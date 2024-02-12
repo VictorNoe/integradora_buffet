@@ -9,18 +9,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Optional;
 
+@Transactional
 @Service
 @Slf4j
 public class CategoryService {
     @Autowired
     CategoryRepository categoryRepository;
+    @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll() {
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.categoryRepository.findAll(),false,200,"OK"));
     }
+    @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> insertCategory(CategoryDTO categoryDTO){
 
         Optional<Category> existName = categoryRepository.findByCategoryName(categoryDTO.getCategory_name());
