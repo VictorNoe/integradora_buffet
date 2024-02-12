@@ -21,6 +21,8 @@ public class UserInfo {
     @Column(nullable = false)
     private String lastname;
     @Column(nullable = false)
+    private String phone;
+    @Column(nullable = false)
     private Date createdAt;
     @Column(nullable = true)
     private Date modified_at;
