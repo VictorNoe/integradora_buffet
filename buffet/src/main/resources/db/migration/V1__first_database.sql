@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS User_info (
 id_user_info INT PRIMARY KEY NOT NULL auto_increment,
  name VARCHAR(20) NOT NULL,
 lastname VARCHAR(20) NOT NULL,
+phone VARCHAR(15) NOT NULL,
 created_at DATETIME NOT NULL,
 modified_at DATETIME,
 fk_user_type int NOT NULL,
