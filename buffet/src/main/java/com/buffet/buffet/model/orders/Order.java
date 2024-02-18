@@ -16,22 +16,31 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Package_Orders")
+@Table(name = "package_order")
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private Integer id;
+    @Column(name = "num_order")
+    private Integer numOrder;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "order_date")
     private Date orderDate;
 
     @Column(name = "order_price")
     private Double orderPrice;
-
-    @Column(name = "address")
-    private String address;
+    @Column(name = "street")
+    private String street;
+    @Column(name = "distric")
+    private String disctric;
+    @Column(name = "postal_code")
+    private String postalCode;
+    @Column(name = "city")
+    private String city;
+    @Column(name = "comments")
+    private String comments;
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
     private UserAccount userAccount;

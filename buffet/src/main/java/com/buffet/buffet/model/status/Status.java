@@ -18,6 +18,6 @@ public class Status {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idStatus;
 
-    @Column(nullable = false)
+    @Column(name = "status_name",nullable = false)
     private String status;
 }

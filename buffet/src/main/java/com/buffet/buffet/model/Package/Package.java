@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Service_Packages")
+@Table(name = "service_package")
 public class Package {
 
     @Id

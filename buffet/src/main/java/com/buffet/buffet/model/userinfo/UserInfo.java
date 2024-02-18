@@ -22,6 +22,8 @@ public class UserInfo {
     @Column(nullable = false)
     private String lastname;
     @Column(nullable = false)
+    private String surname;
+    @Column(nullable = false)
     private String phone;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(nullable = false)

@@ -5,7 +5,7 @@ import com.buffet.buffet.model.useraccount.UserAccount;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Workers_Assignment")
+@Table(name = "worker_assignment")
 public class WorkerAssignment {
 
     @Id

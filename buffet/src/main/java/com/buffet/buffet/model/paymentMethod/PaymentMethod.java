@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Payment_Method")
+@Table(name = "payment_method")
 public class PaymentMethod {
 
     @Id
