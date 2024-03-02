@@ -1,5 +1,6 @@
 package com.buffet.buffet.model.useraccount;
 
+import com.buffet.buffet.model.usertype.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, UUID> 
 boolean existsByEmail(String email);
 Optional<UserAccount> findByEmail(String email);
 List<UserAccount> findByFkUserInfo_FkUserType_UserType(String roleName);
-
+int countUserAccountByFkUserInfo_FkUserType(UserType userType);
 }
