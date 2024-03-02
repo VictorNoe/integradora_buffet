@@ -17,3 +17,15 @@ INSERT INTO user_account (id_user_account,email, password, token,login_time,logo
 INSERT INTO user_account (id_user_account,email, password, token,login_time,logout_time, fk_user_info, fk_status   ) VALUES (X'2765C5E1D83F11EE944BD812655E2922','v@gmail.com', 'Buffet1!', 'worker','2024-02-11 19:35:36','2024-02-11 19:35:36', X'2765C5E1D83F11EE944BD812655E2922', X'2765C5E1D83F11EE944BD812655E2909');
 INSERT INTO user_account (id_user_account,email, password, token,login_time,logout_time, fk_user_info, fk_status   ) VALUES (X'2765C5E1D83F11EE944BD812655E2923','k@gmail.com', 'Buffet1!', 'public','2024-02-11 19:35:36','2024-02-11 19:35:36', X'2765C5E1D83F11EE944BD812655E2933', X'2765C5E1D83F11EE944BD812655E2909');
 
+INSERT INTO service_category
+VALUES      (X'1165C5E1D83F11EE944BD812655E2909', 'Comida'),
+            (X'2265C5E1D83F11EE944BD812655E2909', 'Transporte'),
+             (X'3365C5E1D83F11EE944BD812655E2909', 'Eventos'),
+            (X'4465C5E1D83F11EE944BD812655E2909', 'Utileria');
+
+INSERT INTO service_package
+VALUES
+    (X'1265C5E1D83F11EE944BD812655E2909','Cena de graduacion','Cena de 2 tiempos, incluye mesas, sillas, meseros, para 10 personas',1000.00,0.00,'https://www.shutterstock.com/image-photo/party-table-graduation-decoration-600nw-1198731190.jpg',10,'2024-03-01 22:46:49','2024-03-01 22:46:49',X'1165C5E1D83F11EE944BD812655E2909',X'2765C5E1D83F11EE944BD812655E2909'),
+    (X'1365C5E1D83F11EE944BD812655E2909','Urban','Camioneta para 8 personas ',1000.00,0.00,'https://horsepowermexico.com/wp-content/uploads/2018/07/P_670a46c74851479788dd70273e709b15.jpg',1,'2024-03-01 22:46:49','2024-03-01 22:46:49',X'2265C5E1D83F11EE944BD812655E2909',X'2765C5E1D83F11EE944BD812655E2909'),
+    (X'1465C5E1D83F11EE944BD812655E2909','Comida infantil','Cena de 3 tiempos,incluye mesa de dulces, incluye mesas, sillas, meseros, para 30 personas',1000.00,0.00,'https://www.gob.mx/cms/uploads/article/main_image/114673/Depositphotos_122576538_XL_750x392.jpg',4,'2024-03-01 22:46:49','2024-03-01 22:46:49',X'1165C5E1D83F11EE944BD812655E2909',X'2765C5E1D83F11EE944BD812655E2909'),
+    (X'1565C5E1D83F11EE944BD812655E2909','Taquiza','Incluye tacos de pastor, suadero, costilla, verdura, para 50 personas',1000.00,0.00,'https://taquizasdonjulio.com.mx/wp-content/uploads/2022/01/Taquizas-6.jpg',5,'2024-03-01 22:46:49','2024-03-01 22:46:49',X'1165C5E1D83F11EE944BD812655E2909',X'2765C5E1D83F11EE944BD812655E2909');
