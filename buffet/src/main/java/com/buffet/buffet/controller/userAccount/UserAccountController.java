@@ -36,8 +36,8 @@ public class UserAccountController {
     public ResponseEntity<CustomResponse> getAllClients( ){
         return this.userAccountService.getAllClients();
     }
-    @GetMapping(value = "/getInfoUser/{id}", produces = "application/json")
-    public ResponseEntity<CustomResponse> getAllClients(@PathVariable("id") int id ){
-        return this.userAccountService.getInfoUser(id);
+    @PostMapping(value = "/getInfoUser", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllClients(@RequestBody String email ){
+        return this.userAccountService.getInfoUser(email);
     }
 }

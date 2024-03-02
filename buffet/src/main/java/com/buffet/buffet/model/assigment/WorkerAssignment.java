@@ -4,14 +4,16 @@ import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.useraccount.UserAccount;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "worker_assignment")
 public class WorkerAssignment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_assigment")
-    private Integer id;
+    @GeneratedValue(generator = "UUID")
+    @Column(name = "id_assigment",length = 16)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
@@ -20,5 +22,10 @@ public class WorkerAssignment {
     @ManyToOne
     @JoinColumn(name = "fk_order")
     private Order packageOrder;
-
+    @PrePersist
+    private void generateUUID() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+    }
 }

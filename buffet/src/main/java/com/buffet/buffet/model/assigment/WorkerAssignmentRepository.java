@@ -2,5 +2,7 @@ package com.buffet.buffet.model.assigment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkerAssignmentRepository extends JpaRepository<WorkerAssignment,Integer> {
+import java.util.UUID;
+
+public interface WorkerAssignmentRepository extends JpaRepository<WorkerAssignment, UUID> {
 }

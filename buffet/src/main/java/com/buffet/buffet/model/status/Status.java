@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,9 +17,15 @@ public class Status {
     @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "id_status", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idStatus;
+    @GeneratedValue(generator = "UUID")
+    private UUID idStatus;
 
     @Column(name = "status_name",nullable = false)
     private String status;
+    @PrePersist
+    private void generateUUID() {
+        if (this.idStatus == null) {
+            this.idStatus = UUID.randomUUID();
+        }
+    }
 }

@@ -1,12 +1,14 @@
 package com.buffet.buffet.model.category;
 import com.buffet.buffet.model.Package.Package;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -16,13 +18,22 @@ import java.util.List;
 public class Category {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_category")
-    private Integer id;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @GeneratedValue(generator = "UUID")
+    @Column(name = "id_category",length = 16)
+    private UUID id;
 
     @Column(name = "category_name")
     private String categoryName;
     @OneToMany(mappedBy = "category")
     @JsonIgnore
     private List<Package> packages;
+    @PrePersist
+    private void generateUUID() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+    }
 }
+
+

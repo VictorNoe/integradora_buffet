@@ -37,13 +37,14 @@ public class PackageService {
         }
         Optional<Status> status = statusRepository.findByStatus("enable");
         if(status.isPresent()){
-            Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory().getCategoryName());
+            Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
             if (category.isPresent()){
                 packageSave.setPackageName(packageDTO.getPackageName());
                 packageSave.setPackageDescription(packageDTO.getPackageDescription());
                 packageSave.setImage(packageDTO.getImage());
                 packageSave.setDiscount(packageDTO.getDiscount());
                 packageSave.setPrice(packageDTO.getPrice());
+                packageSave.setAbility(packageDTO.getAbility());
                 packageSave.setCategory(category.get());
                 packageSave.setStatus(status.get());
                 return ResponseEntity.status(HttpStatus.CREATED)
@@ -51,7 +52,7 @@ public class PackageService {
             }else {
                 log.error("Categoria inexistente");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoria no encontrad"));
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoria no encontrada"));
             }
         }else {
             log.error("Status inexistente");

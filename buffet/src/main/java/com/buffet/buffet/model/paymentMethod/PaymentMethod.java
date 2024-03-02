@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class PaymentMethod {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
     @Column(name = "id_payment_method")
-    private Integer id;
+    private UUID id;
 
     @Column(name = "name")
     private String name;
@@ -27,4 +29,10 @@ public class PaymentMethod {
     @ManyToOne
     @JoinColumn(name = "fk_status")
     private Status status;
+    @PrePersist
+    private void generateUUID() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+    }
 }

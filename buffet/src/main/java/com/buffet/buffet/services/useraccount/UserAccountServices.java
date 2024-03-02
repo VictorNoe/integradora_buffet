@@ -163,11 +163,11 @@ public class UserAccountServices {
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> getInfoUser(int id) {
-        if(!userAccountRepository.existsById(id)){
+    public ResponseEntity<CustomResponse> getInfoUser(String email) {
+        if(!userAccountRepository.existsByEmail(email)){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Id invalido"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "email invalido"));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.findById(id),false,200,"OK"));
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.findByEmail(email),false,200,"OK"));
     }
 }

@@ -7,8 +7,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.objenesis.instantiator.util.UnsafeUtils;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,9 +20,9 @@ import java.util.Date;
 public class Package {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
     @Column(name = "id_package")
-    private Integer id;
+    private UUID id;
 
     @Column(name = "package_name")
     private String packageName;
@@ -36,6 +38,8 @@ public class Package {
 
     @Column(name = "discount")
     private double discount;
+    @Column(name = "ability")
+    private Integer ability;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "created_at")
     private Date createdAt;
@@ -55,5 +59,8 @@ public class Package {
     public void prePresist(){
         this.createdAt = new Date();
         this.modifiedAt = new Date();
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
     }
 }

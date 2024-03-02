@@ -24,8 +24,9 @@ public class PackageDTO {
     @NotNull(message = "El precio no puede estar vacio")
     private double price;
     private double discount;
+    private Integer ability;
     @NotNull(message = "Debes agregar una categoria")
-    private Category category;
+    private String category;
 
 
 }

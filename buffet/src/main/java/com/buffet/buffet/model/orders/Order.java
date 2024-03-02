@@ -12,6 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,11 +22,11 @@ import java.util.Date;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = "UUID")
     @Column(name = "id_order")
-    private Integer id;
+    private UUID id;
     @Column(name = "num_order")
-    private Integer numOrder;
+    private String numOrder;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "order_date")
     private Date orderDate;
@@ -56,4 +58,10 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "fk_payment_method")
     private PaymentMethod paymentMethod;
+    @PrePersist
+    private void generateUUID() {
+        if (this.id == null) {
+            this.id = UUID.randomUUID();
+        }
+    }
 }

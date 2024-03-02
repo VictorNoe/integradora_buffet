@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -19,8 +20,8 @@ import java.util.Date;
 public class UserAccount {
     @Id
     @Column(name = "id_user_account", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idUserAccount;
+    @GeneratedValue(generator = "UUID")
+    private UUID idUserAccount;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
@@ -42,5 +43,10 @@ public class UserAccount {
     @OneToOne(optional = false, targetEntity = Status.class)
     @JoinColumn(name = "fk_status", referencedColumnName = "id_status")
     private Status fkStatus;
-
+    @PrePersist
+    private void generateUUID() {
+        if (this.idUserAccount == null) {
+            this.idUserAccount = UUID.randomUUID();
+        }
+    }
 }
