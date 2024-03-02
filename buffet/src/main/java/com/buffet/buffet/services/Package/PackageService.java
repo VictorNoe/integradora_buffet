@@ -30,8 +30,8 @@ public class PackageService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerPackage(PackageDTO packageDTO){
         Package packageSave = new Package();
-        Optional<Package> exist = packageRepository.findByPackageName(packageDTO.getPackageName());
-        if(exist.isPresent()){
+        Package exist = packageRepository.findByPackageName(packageDTO.getPackageName());
+        if(exist != null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre ya ah sido registrado"));
         }
@@ -61,8 +61,41 @@ public class PackageService {
         }
 
     }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<CustomResponse> updatePackage(PackageDTO packageDTO) {
+        Package packageUpdate = packageRepository.findByPackageName(packageDTO.getPackageName());
+        if(packageUpdate==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre del paquete no existe"));
+        }
+        Optional<Status> status = statusRepository.findByStatus("enable");
+        if(status.isPresent()){
+            Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
+            if (category.isPresent()){
+                packageUpdate.setPackageName(packageDTO.getPackageName());
+                packageUpdate.setPackageDescription(packageDTO.getPackageDescription());
+                packageUpdate.setImage(packageDTO.getImage());
+                packageUpdate.setDiscount(packageDTO.getDiscount());
+                packageUpdate.setPrice(packageDTO.getPrice());
+                packageUpdate.setAbility(packageDTO.getAbility());
+                packageUpdate.setCategory(category.get());
+                packageUpdate.setStatus(status.get());
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(new CustomResponse(packageRepository.saveAndFlush(packageUpdate), false, HttpStatus.CREATED.value(), "Paquete actualizado"));
+            }else {
+                log.error("Categoria inexistente");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoria no encontrada"));
+            }
+        }else {
+            log.error("Status inexistente");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+        }
+    }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.findAll(),false,200,"OK"));
     }
+
 }

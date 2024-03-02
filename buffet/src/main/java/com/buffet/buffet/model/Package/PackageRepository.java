@@ -6,5 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PackageRepository extends JpaRepository<Package, UUID> {
-Optional<Package> findByPackageName(String name);
+Package findByPackageName(String name);
+
+
 }

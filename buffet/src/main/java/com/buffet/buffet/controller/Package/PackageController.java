@@ -18,6 +18,10 @@ public class PackageController {
     public ResponseEntity<CustomResponse> register(@Valid @RequestBody PackageDTO packageDTO) {
         return packageService.registerPackage(packageDTO);
     }
+    @PutMapping(value = "/update", produces = "application/json")
+    public ResponseEntity<CustomResponse> update(@Valid @RequestBody PackageDTO packageDTO) {
+        return packageService.updatePackage(packageDTO);
+    }
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse> getPackages(){
         return packageService.getAll();
