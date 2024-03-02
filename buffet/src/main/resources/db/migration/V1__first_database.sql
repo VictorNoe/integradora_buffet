@@ -45,6 +45,7 @@ CREATE TABLE IF NOT EXISTS service_package (
     package_description VARCHAR(300),
     price DOUBLE NOT NULL,
     discount DOUBLE,
+    image varchar(200),
     ability INT NOT NULL,
     created_at DATETIME NOT NULL,
     modified_at DATETIME,
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS service_package (
     FOREIGN KEY (fk_category) REFERENCES service_category(id_category),
     FOREIGN KEY (fk_status) REFERENCES status(id_status)
     );
+
 
 CREATE TABLE IF NOT EXISTS payment_method(
     id_payment_method binary(16) PRIMARY KEY NOT NULL,
