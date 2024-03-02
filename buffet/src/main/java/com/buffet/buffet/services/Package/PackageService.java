@@ -1,6 +1,7 @@
 package com.buffet.buffet.services.Package;
 
 import com.buffet.buffet.controller.Package.PackageDTO.PackageDTO;
+import com.buffet.buffet.controller.Package.PackageDTO.UpdateStatusDTO;
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
 import com.buffet.buffet.model.category.Category;
@@ -93,7 +94,24 @@ public class PackageService {
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
         }
     }
-    @Transactional(readOnly = true)
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<CustomResponse> updateStatus(UpdateStatusDTO updateStatus){
+        Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
+    if (statusExist.isPresent()){
+        Package packageUpdate = this.packageRepository.findByPackageName(updateStatus.getPackageName());
+        if(packageUpdate==null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Paquete invalido"));
+        }
+        packageUpdate.setStatus(statusExist.get());
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.saveAndFlush(packageUpdate),false,200,"Status actualizado"));
+    }else {
+        log.error("Status inexistente");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+    }
+    }
+        @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.findAll(),false,200,"OK"));
     }

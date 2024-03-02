@@ -1,6 +1,7 @@
 package com.buffet.buffet.controller.Package;
 
 import com.buffet.buffet.controller.Package.PackageDTO.PackageDTO;
+import com.buffet.buffet.controller.Package.PackageDTO.UpdateStatusDTO;
 import com.buffet.buffet.services.Package.PackageService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
@@ -21,6 +22,10 @@ public class PackageController {
     @PutMapping(value = "/update", produces = "application/json")
     public ResponseEntity<CustomResponse> update(@Valid @RequestBody PackageDTO packageDTO) {
         return packageService.updatePackage(packageDTO);
+    }
+    @PutMapping(value = "/updateStatus", produces = "application/json")
+    public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatusDTO updateStatus) {
+        return packageService.updateStatus(updateStatus);
     }
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse> getPackages(){
