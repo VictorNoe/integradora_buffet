@@ -9,7 +9,7 @@ VALUES     (X'2765C5E1D83F11EE944BD812655E2909', 'enable'),
            (X'2765C5E1D83F11EE944BD812655E2913', 'sold'),
            (X'2765C5E1D83F11EE944BD812655E2943', 'required');
 
-INSERT INTO user_info (id_user_info,name, lastname,surname,phone, created_at, modified_at, fk_user_type) VALUES (X'2765C5E1D83F11EE944BD812655E2911','Christian','Carrasco', 'Alonso','7778189101', '2024-02-11 19:35:36', '2024-02-11 19:35:36', X'2765C5E1D83F11EE944BD812655E2906');
+INSERT INTO user_info (id_user_info,name, lastname,surname,phone, created_at, modified_at, fk_user_type) VALUES (X'2765C5E1D83F11EE944BD812655E2911','Christian','Carrasco', 'Alonso','7778189101', '2024-02-11 19:35:36', '2024-02-11 19:35:36', X'1530FD96D83F11EE944BD812655E2906');
 INSERT INTO user_info (id_user_info,name, lastname,surname,phone, created_at, modified_at, fk_user_type) VALUES (X'2765C5E1D83F11EE944BD812655E2922','Victor','Flores', 'Arriaga','777213101', '2024-02-11 19:35:36', '2024-02-11 19:35:36', X'21E60A80D83F11EE944BD812655E2906');
 INSERT INTO user_info (id_user_info,name, lastname,surname,phone, created_at, modified_at, fk_user_type) VALUES (X'2765C5E1D83F11EE944BD812655E2933','Karel','Perez', 'Mendoza','77712121', '2024-02-11 19:35:36', '2024-02-11 19:35:36', X'2765C5E1D83F11EE944BD812655E2906');
 
