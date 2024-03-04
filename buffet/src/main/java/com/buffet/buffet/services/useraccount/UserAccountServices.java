@@ -128,12 +128,12 @@ public class UserAccountServices {
     public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
         try {
             log.info("Auth request ->"+authRequest.toString());
-            Optional<UserAccount> optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
-            if (optionalUserAccount.isPresent()) {
-                boolean existsLogin = Objects.equals(optionalUserAccount.get().getPassword(), authRequest.getPassword());
+            UserAccount optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
+            if (optionalUserAccount!=null) {
+                boolean existsLogin = Objects.equals(optionalUserAccount.getPassword(), authRequest.getPassword());
                 if (existsLogin) {
                     String accessToken="1234";
-                    UserAccount ua = optionalUserAccount.get();
+                    UserAccount ua = optionalUserAccount;
                     ua.setToken(accessToken);
                     userAccountRepository.save(ua);
                     return ResponseEntity.ok()
@@ -175,10 +175,10 @@ public class UserAccountServices {
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
         Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
         if (statusExist.isPresent()){
-            UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName()).get();
+            UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName());
             if(userUpdate==null){
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Paquete invalido"));
+                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Usuario invalido"));
             }
             userUpdate.setFkStatus(statusExist.get());
             return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.saveAndFlush(userUpdate),false,200,"Usuario actualizado"));

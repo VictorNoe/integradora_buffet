@@ -45,8 +45,8 @@ public class OrderService {
         if (statusExist.isPresent()){
             Optional<UserType> userType = this.userTypeRepository.findByUserType("worker");
             if (userType.isPresent()){
-                    Optional<UserAccount> user = this.userAccountRepository.findByEmail(orderDTO.getUserEmail());
-                    if (user.isPresent()){
+                    UserAccount user = this.userAccountRepository.findByEmail(orderDTO.getUserEmail());
+                    if (user != null){
                         Package packageExist = this.packageRepository.findByPackageName(orderDTO.getPackageName());
                         if (packageExist!=null && !Objects.equals(packageExist.getStatus().getStatus(), "disabled")){
                             int abilityUsers = this.userAccountRepository.countUserAccountByFkUserInfo_FkUserType(userType.get());
@@ -62,7 +62,7 @@ public class OrderService {
                                 orderSave.setStatus(statusExist.get());
                                 orderSave.setPostalCode(orderDTO.getPostalCode());
                                 orderSave.setOrderDate(new Date());//Cambiar por date solicitado
-                                orderSave.setUserAccount(user.get());
+                                orderSave.setUserAccount(user);
                                 orderSave.setServicePackage(packageExist);
                                 return ResponseEntity.status(HttpStatus.CREATED)
                                         .body(new CustomResponse(this.orderRepository.save(orderSave), true, HttpStatus.CREATED.value(), "Paquete solicitado con exito"));
