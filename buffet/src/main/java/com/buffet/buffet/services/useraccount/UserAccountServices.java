@@ -1,6 +1,7 @@
 package com.buffet.buffet.services.useraccount;
 import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
 import com.buffet.buffet.model.AuthRequest.AuthRequest;
+import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.status.StatusRepository;
 import com.buffet.buffet.model.useraccount.UserAccount;
@@ -169,5 +170,22 @@ public class UserAccountServices {
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "email invalido"));
         }
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.findByEmail(email),false,200,"OK"));
+    }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
+        Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
+        if (statusExist.isPresent()){
+            UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName()).get();
+            if(userUpdate==null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Paquete invalido"));
+            }
+            userUpdate.setFkStatus(statusExist.get());
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.saveAndFlush(userUpdate),false,200,"Usuario actualizado"));
+        }else {
+            log.error("Status inexistente");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+        }
     }
 }

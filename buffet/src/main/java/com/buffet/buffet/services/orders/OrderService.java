@@ -1,6 +1,5 @@
 package com.buffet.buffet.services.orders;
 
-import com.buffet.buffet.controller.Package.PackageDTO.UpdateStatusDTO;
 import com.buffet.buffet.controller.order.orderDto.OrderDTO;
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;

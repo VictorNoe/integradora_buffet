@@ -2,6 +2,7 @@ package com.buffet.buffet.controller.userAccount;
 
 import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
 import com.buffet.buffet.model.AuthRequest.AuthRequest;
+import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
@@ -27,6 +28,10 @@ public class UserAccountController {
     @PostMapping(value = "/registerWorker", produces = "application/json")
     public ResponseEntity<CustomResponse> registerWorker(@Valid @RequestBody UserDTO user) {
         return userAccountService.registerWorker(user);
+    }
+    @PutMapping(value = "/updateStatus", produces = "application/json")
+    public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
+        return userAccountService.updateStatus(updateStatus);
     }
     @GetMapping(value = "/getWorkers", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllWorkers( ){

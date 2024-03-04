@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.Package.PackageDTO;
+package com.buffet.buffet.model.UpdateStatus;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
-public class UpdateStatusDTO {
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El nombre no debe contener caracteres especiales")
+public class UpdateStatus {
     @NotEmpty(message = "El nombre no puede estar en blanco")
-    private String packageName;
+    private String name;
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "El status no debe contener caracteres especiales")
     @NotEmpty(message = "El status no puede estar en blanco")
     private String status;

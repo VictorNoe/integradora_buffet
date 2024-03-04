@@ -1,9 +1,9 @@
 package com.buffet.buffet.services.Package;
 
 import com.buffet.buffet.controller.Package.PackageDTO.PackageDTO;
-import com.buffet.buffet.controller.Package.PackageDTO.UpdateStatusDTO;
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
+import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
 import com.buffet.buffet.model.category.Category;
 import com.buffet.buffet.model.category.CategoryRepository;
 import com.buffet.buffet.model.status.Status;
@@ -95,10 +95,10 @@ public class PackageService {
         }
     }
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<CustomResponse> updateStatus(UpdateStatusDTO updateStatus){
+    public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
         Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
     if (statusExist.isPresent()){
-        Package packageUpdate = this.packageRepository.findByPackageName(updateStatus.getPackageName());
+        Package packageUpdate = this.packageRepository.findByPackageName(updateStatus.getName());
         if(packageUpdate==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Paquete invalido"));
