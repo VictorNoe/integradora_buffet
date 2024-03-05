@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS worker_assignment (
     );
 CREATE TABLE IF NOT EXISTs package_has_comment(
     id_package_has_comment binary(16) NOT NULL,
-    comment_text VARCHAR(50) NOT NULL,
+    comment_text VARCHAR(150) NOT NULL,
     comment_point int,
     comment_date DATETIME NOT NULL,
     fk_user_account binary(16) not null,

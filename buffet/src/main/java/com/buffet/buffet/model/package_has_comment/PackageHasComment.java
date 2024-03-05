@@ -20,7 +20,7 @@ public class PackageHasComment {
     @GeneratedValue(generator = "UUID")
     @Column(name = "id_package_has_comment",length = 16)
     private UUID id_package_has_comment;
-    @Column(name = "comment_text",length = 50)
+    @Column(name = "comment_text",length = 150)
     private String comment;
     @Column(name = "comment_point")
     private Integer point;

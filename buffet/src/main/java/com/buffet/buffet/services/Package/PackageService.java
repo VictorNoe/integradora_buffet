@@ -116,4 +116,15 @@ public class PackageService {
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.findAll(),false,200,"OK"));
     }
 
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getPackage(String packageName) {
+        Package packageExist = packageRepository.findByPackageName(packageName);
+        if (packageExist != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageExist, false, 200, "OK"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, 404, "Paquete no encontrado"));
+
+        }
+    }
+
 }

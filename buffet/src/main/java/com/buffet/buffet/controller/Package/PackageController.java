@@ -31,4 +31,8 @@ public class PackageController {
     public ResponseEntity<CustomResponse> getPackages(){
         return packageService.getAll();
     }
+    @GetMapping(value = "/{packageName}", produces = "application/json")
+    public ResponseEntity<CustomResponse> getPackage(@PathVariable String packageName){
+        return packageService.getPackage(packageName);
+    }
 }
