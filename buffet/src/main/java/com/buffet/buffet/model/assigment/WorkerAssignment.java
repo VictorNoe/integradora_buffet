@@ -2,7 +2,14 @@ package com.buffet.buffet.model.assigment;
 
 import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.useraccount.UserAccount;
-import jakarta.persistence.*;
+import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 
 import java.util.UUID;
 
