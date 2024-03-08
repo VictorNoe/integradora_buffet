@@ -118,7 +118,6 @@ public class OrderService {
     public String generateRandomOrderNumber() {
         Random random = new Random();
         int randomNumber = 10000 + random.nextInt(90000);
-        String randomOrderNumber = String.valueOf(randomNumber);
-        return randomOrderNumber;
+        return String.valueOf(randomNumber);
     }
 }
