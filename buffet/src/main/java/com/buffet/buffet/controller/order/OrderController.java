@@ -7,11 +7,7 @@ import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-    import org.springframework.web.bind.annotation.RestController;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.CrossOrigin;
-    import org.springframework.web.bind.annotation.PostMapping;
-    import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/order")
@@ -31,5 +27,12 @@ public class OrderController {
     public ResponseEntity<CustomResponse> getOrderByNumOrder(@RequestBody String numOrder) {
         return orderService.findByNumOrder(numOrder);
     }
-
+    @GetMapping(value = "/getOrderByNumOrder", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllOrders() {
+        return orderService.findAllOrders();
+    }
+    @GetMapping(value = "/getOrderByNumOrder", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllOrdersAvailable() {
+        return orderService.findAllOrdersRequired();
+    }
 }

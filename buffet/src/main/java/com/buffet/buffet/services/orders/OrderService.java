@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Objects;
@@ -113,6 +112,19 @@ public class OrderService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(existOrder,true,HttpStatus.OK.value(), "Orden "+numOrder));
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
+        }
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findAllOrders(){
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAll(),false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findAllOrdersRequired(){
+        Optional<Status> status = this.statusRepository.findByStatus("required");
+        if (status.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findByStatus(status.get()),false,200,"OK"));
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Status invalido"));
         }
     }
     public String generateRandomOrderNumber() {
