@@ -3,6 +3,7 @@ package com.buffet.buffet.services.orders;
 import com.buffet.buffet.controller.order.orderDto.OrderDTO;
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
+import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
 import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.orders.OrderRepository;
 import com.buffet.buffet.model.status.Status;
@@ -88,6 +89,30 @@ public class OrderService {
             log.error("Status inexistente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+        }
+    }
+   @Transactional(rollbackFor = {SQLException.class})
+   public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
+        Optional<Status> existStatus = this.statusRepository.findByStatus(updateStatus.getStatus());
+        if (existStatus.isPresent()){
+            Order orderUpdate = this.orderRepository.findByNumOrder(updateStatus.getName());
+            if (orderUpdate!=null){
+                orderUpdate.setStatus(existStatus.get());
+                return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.saveAndFlush(orderUpdate),false,HttpStatus.OK.value(), "Status de orden actualizado"));
+            }else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Numero de orden no encontrado"));
+            }
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+        }
+   }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findByNumOrder(String numOrder){
+        Order existOrder = this.orderRepository.findByNumOrder(numOrder);
+        if (existOrder!=null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(existOrder,true,HttpStatus.OK.value(), "Orden "+numOrder));
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
         }
     }
     public String generateRandomOrderNumber() {
