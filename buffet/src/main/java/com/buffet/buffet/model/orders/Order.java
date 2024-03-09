@@ -3,7 +3,7 @@ package com.buffet.buffet.model.orders;
 
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.status.Status;
-import com.buffet.buffet.model.paymentMethod.PaymentMethod;
+import com.buffet.buffet.model.payment.Payment;
 import com.buffet.buffet.model.useraccount.UserAccount;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Id;
@@ -50,6 +50,9 @@ public class Order {
     private String city;
     @Column(name = "comments")
     private String comments;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @Column(name = "created_at")
+    private Date createdAt;
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
     private UserAccount userAccount;
@@ -63,10 +66,11 @@ public class Order {
     private Status status;
 
     @ManyToOne
-    @JoinColumn(name = "fk_payment_method")
-    private PaymentMethod paymentMethod;
+    @JoinColumn(name = "fk_payment")
+    private Payment paymentMethod;
     @PrePersist
-    private void generateUUID() {
+    public void prePresist(){
+        this.createdAt = new Date();
         if (this.id == null) {
             this.id = UUID.randomUUID();
         }

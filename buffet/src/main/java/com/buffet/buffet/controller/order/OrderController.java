@@ -27,12 +27,12 @@ public class OrderController {
     public ResponseEntity<CustomResponse> getOrderByNumOrder(@RequestBody String numOrder) {
         return orderService.findByNumOrder(numOrder);
     }
-    @GetMapping(value = "/getOrderByNumOrder", produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllOrders() {
         return orderService.findAllOrders();
     }
-    @GetMapping(value = "/getOrderByNumOrder", produces = "application/json")
-    public ResponseEntity<CustomResponse> getAllOrdersAvailable() {
+    @GetMapping(value = "/getAllOrdersRequired", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllOrdersRequired() {
         return orderService.findAllOrdersRequired();
     }
 }
