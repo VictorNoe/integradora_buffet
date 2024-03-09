@@ -56,12 +56,12 @@ CREATE TABLE IF NOT EXISTS service_package (
     );
 
 
-CREATE TABLE IF NOT EXISTS payment_method(
-    id_payment_method binary(16) PRIMARY KEY NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    description VARCHAR(100) NOT NULL,
-    fk_status binary(16) NOT NULL,
-    FOREIGN KEY (fk_status) REFERENCES status(id_status)
+CREATE TABLE IF NOT EXISTS payment(
+    id_payment binary(16) PRIMARY KEY NOT NULL,
+    payment_method VARCHAR(20) NOT NULL,
+    transaction_id VARCHAR(100) NOT NULL,
+    transaction_date DATETIME,
+    transaction_description VARCHAR(50) NOT NULL
     );
 
 CREATE TABLE IF NOT EXISTS package_order (
@@ -74,14 +74,15 @@ CREATE TABLE IF NOT EXISTS package_order (
     postal_code INT(8) NOT NULL,
     city VARCHAR(30) NOT NULL,
     comments VARCHAR(100),
+    created_at DATETIME,
     fk_user_account binary(16) NOT NULL,
     fk_package binary(16) NOT NULL,
     fk_status binary(16) NOT NULL,
-    fk_payment_method binary(16),
+    fk_payment binary(16),
     FOREIGN KEY (fk_user_account) REFERENCES user_account(id_user_account),
     FOREIGN KEY (fk_package) REFERENCES service_package(id_package),
     FOREIGN KEY (fk_status) REFERENCES status(id_status),
-    FOREIGN KEY (fk_payment_method) REFERENCES payment_method(id_payment_method)
+    FOREIGN KEY (fk_payment) REFERENCES payment(id_payment)
     );
 CREATE TABLE IF NOT EXISTS worker_assignment (
     id_assigment binary(16) PRIMARY KEY NOT NULL,
