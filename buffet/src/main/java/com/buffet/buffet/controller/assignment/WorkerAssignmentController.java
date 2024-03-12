@@ -1,6 +1,6 @@
 package com.buffet.buffet.controller.assignment;
 
-import com.buffet.buffet.controller.assignment.assignmentDto.AssignmentDTO;
+import com.buffet.buffet.controller.assignment.assignmentdto.AssignmentDTO;
 import com.buffet.buffet.services.assigment.WorkerAssignmentService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;

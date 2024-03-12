@@ -1,6 +1,6 @@
 package com.buffet.buffet.services.assigment;
 
-import com.buffet.buffet.controller.assignment.assignmentDto.AssignmentDTO;
+import com.buffet.buffet.controller.assignment.assignmentdto.AssignmentDTO;
 import com.buffet.buffet.model.assigment.WorkerAssignment;
 import com.buffet.buffet.model.assigment.WorkerAssignmentRepository;
 import com.buffet.buffet.model.orders.Order;

@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.assignment.assignmentDto;
+package com.buffet.buffet.controller.assignment.assignmentdto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
