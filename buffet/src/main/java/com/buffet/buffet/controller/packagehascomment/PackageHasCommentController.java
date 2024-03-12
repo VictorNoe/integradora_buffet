@@ -17,7 +17,7 @@ public class PackageHasCommentController {
     private final PackageHasCommentService packageHasCommentService;
     @Autowired
 
-    private PackageHasCommentController(PackageHasCommentService packageHasCommentService) {
+    public PackageHasCommentController(PackageHasCommentService packageHasCommentService) {
         this.packageHasCommentService = packageHasCommentService;
     }
 

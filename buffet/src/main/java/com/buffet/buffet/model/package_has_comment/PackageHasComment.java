@@ -26,13 +26,13 @@ public class PackageHasComment {
     @Id
     @GeneratedValue(generator = "UUID")
     @Column(name = "id_package_has_comment",length = 16)
-    private UUID id_package_has_comment;
+    private UUID idPackageHasComment;
     @Column(name = "comment_text",length = 150)
     private String comment;
     @Column(name = "comment_point")
     private Integer point;
     @Column(name = "comment_date")
-    private Date comment_date;
+    private Date commentDate;
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
     private UserAccount userAccount;
@@ -41,9 +41,9 @@ public class PackageHasComment {
     private Package servicePackage;
     @PrePersist
     public void prePresist(){
-        this.comment_date = new Date();
-        if (this.id_package_has_comment == null) {
-            this.id_package_has_comment = UUID.randomUUID();
+        this.commentDate = new Date();
+        if (this.idPackageHasComment == null) {
+            this.idPackageHasComment = UUID.randomUUID();
         }
     }
 }

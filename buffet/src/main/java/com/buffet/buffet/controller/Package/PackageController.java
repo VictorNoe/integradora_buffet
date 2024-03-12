@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PackageController {
     private final PackageService packageService;
     @Autowired
-    private PackageController(PackageService packageService) {
+    public PackageController(PackageService packageService) {
         this.packageService = packageService;
     }
 
