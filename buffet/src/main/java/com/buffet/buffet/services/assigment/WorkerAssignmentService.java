@@ -26,7 +26,7 @@ public class WorkerAssignmentService {
    private final OrderRepository orderRepository;
     @Autowired
 
-    public WorkerAssignmentService(WorkerAssignmentRepository workerAssignmentRepository, UserAccountRepository userAccountRepository, OrderRepository orderRepository) {
+    private WorkerAssignmentService(WorkerAssignmentRepository workerAssignmentRepository, UserAccountRepository userAccountRepository, OrderRepository orderRepository) {
         this.workerAssignmentRepository = workerAssignmentRepository;
         this.userAccountRepository = userAccountRepository;
         this.orderRepository = orderRepository;

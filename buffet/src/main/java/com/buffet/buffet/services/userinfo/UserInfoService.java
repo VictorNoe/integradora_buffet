@@ -15,7 +15,7 @@ public class UserInfoService {
     private final UserInfoRepository repository;
     @Autowired
 
-    public UserInfoService(UserInfoRepository repository) {
+    private UserInfoService(UserInfoRepository repository) {
         this.repository = repository;
     }
 

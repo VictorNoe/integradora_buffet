@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class PackageController {
     private final PackageService packageService;
     @Autowired
-    public PackageController(PackageService _packageService) {
-        this.packageService = _packageService;
+    private PackageController(PackageService packageService) {
+        this.packageService = packageService;
     }
 
     @PostMapping(value = "/register", produces = "application/json")

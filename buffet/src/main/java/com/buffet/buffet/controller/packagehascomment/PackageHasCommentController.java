@@ -17,8 +17,8 @@ public class PackageHasCommentController {
     private final PackageHasCommentService packageHasCommentService;
     @Autowired
 
-    public PackageHasCommentController(PackageHasCommentService _packageHasCommentService) {
-        this.packageHasCommentService = _packageHasCommentService;
+    private PackageHasCommentController(PackageHasCommentService packageHasCommentService) {
+        this.packageHasCommentService = packageHasCommentService;
     }
 
     @GetMapping(value = "/{packageName}", produces = "application/json")

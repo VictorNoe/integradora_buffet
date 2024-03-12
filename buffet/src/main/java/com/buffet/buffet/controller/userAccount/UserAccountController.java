@@ -17,7 +17,7 @@ public class UserAccountController {
     private final UserAccountServices userAccountService;
     @Autowired
 
-    public UserAccountController(UserAccountServices userAccountService) {
+    private UserAccountController(UserAccountServices userAccountService) {
         this.userAccountService = userAccountService;
     }
 

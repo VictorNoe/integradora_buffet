@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class WorkerAssignmentController {
     private final WorkerAssignmentService workerAssignmentService;
     @Autowired
-    public WorkerAssignmentController(WorkerAssignmentService workerAssignmentService) {
+    private WorkerAssignmentController(WorkerAssignmentService workerAssignmentService) {
         this.workerAssignmentService = workerAssignmentService;
     }
     @PostMapping(value = "/assignOrder", produces = "application/json")
