@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/packageHasComment")
 @CrossOrigin(origins = {"*"})
 public class PackageHasCommentController {
+    private final PackageHasCommentService packageHasCommentService;
     @Autowired
-    private PackageHasCommentService packageHasCommentService;
+
+    public PackageHasCommentController(PackageHasCommentService _packageHasCommentService) {
+        this.packageHasCommentService = _packageHasCommentService;
+    }
 
     @GetMapping(value = "/{packageName}", produces = "application/json")
     public ResponseEntity<CustomResponse> getPackageHasComment(@PathVariable String packageName) {

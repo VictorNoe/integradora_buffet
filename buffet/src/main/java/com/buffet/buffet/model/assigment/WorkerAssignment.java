@@ -10,11 +10,16 @@ import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Entity
-@Table(name = "worker_assignment")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity@Table(name = "worker_assignment")
 public class WorkerAssignment {
 
     @Id

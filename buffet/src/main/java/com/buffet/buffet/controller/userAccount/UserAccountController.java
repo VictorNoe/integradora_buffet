@@ -8,20 +8,19 @@ import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/userAccount")
 @CrossOrigin(origins = {"*"})
 public class UserAccountController {
+    private final UserAccountServices userAccountService;
     @Autowired
-    private UserAccountServices userAccountService;
+
+    public UserAccountController(UserAccountServices _userAccountService) {
+        this.userAccountService = _userAccountService;
+    }
+
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<CustomResponse> register(@Valid @RequestBody UserDTO user) {
         return userAccountService.registerUser(user);
@@ -48,7 +47,8 @@ public class UserAccountController {
         return this.userAccountService.getAllClients();
     }
     @PostMapping(value = "/getInfoUser", produces = "application/json")
-    public ResponseEntity<CustomResponse> getAllClients(@RequestBody String email ){
+    public ResponseEntity<CustomResponse> getInfoUser(@RequestParam String email ){
+        System.out.println(email);
         return this.userAccountService.getInfoUser(email);
     }
 }

@@ -12,8 +12,13 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserInfoService {
+    private final UserInfoRepository repository;
     @Autowired
-    private UserInfoRepository repository;
+
+    public UserInfoService(UserInfoRepository _repository) {
+        this.repository = _repository;
+    }
+
     public ResponseEntity<CustomResponse> getAll(Pageable page) {
 
             return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.repository.findAll(page),false,200,"OK"));

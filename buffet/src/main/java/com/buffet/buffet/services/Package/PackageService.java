@@ -22,12 +22,17 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class PackageService {
+    private final PackageRepository packageRepository;
+    private final CategoryRepository categoryRepository;
+    private final StatusRepository statusRepository;
     @Autowired
-    PackageRepository packageRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
-    @Autowired
-    private StatusRepository statusRepository;
+
+    public PackageService(PackageRepository _packageRepository, CategoryRepository _categoryRepository, StatusRepository _statusRepository) {
+        this.packageRepository = _packageRepository;
+        this.categoryRepository = _categoryRepository;
+        this.statusRepository = _statusRepository;
+    }
+
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerPackage(PackageDTO packageDTO){
         Package packageSave = new Package();

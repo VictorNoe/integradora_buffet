@@ -18,8 +18,13 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CategoryService {
+    private final CategoryRepository categoryRepository;
     @Autowired
-    CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository _categoryRepository) {
+        this.categoryRepository = _categoryRepository;
+    }
+
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll() {
 

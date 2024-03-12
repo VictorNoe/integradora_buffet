@@ -2,7 +2,6 @@ package com.buffet.buffet.services.packagehascomment;
 
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
-import com.buffet.buffet.model.package_has_comment.PackageHasComment;
 import com.buffet.buffet.model.package_has_comment.PackageHasCommentRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Slf4j
 public class PackageHasCommentService {
+   private final PackageHasCommentRepository packageHasCommentRepository;
+    private final  PackageRepository packageRepository;
     @Autowired
-    PackageHasCommentRepository packageHasCommentRepository;
-    @Autowired
-    PackageRepository packageRepository;
+    public PackageHasCommentService(PackageHasCommentRepository _packageHasCommentRepository, PackageRepository _packageRepository) {
+        this.packageHasCommentRepository = _packageHasCommentRepository;
+        this.packageRepository = _packageRepository;
+    }
 
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getPackageHasComment(String packageName) {

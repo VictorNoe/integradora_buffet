@@ -20,8 +20,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/package")
 @CrossOrigin(origins = {"*"})
 public class PackageController {
+    private final PackageService packageService;
     @Autowired
-    PackageService packageService;
+    public PackageController(PackageService _packageService) {
+        this.packageService = _packageService;
+    }
+
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<CustomResponse> register(@Valid @RequestBody PackageDTO packageDTO) {
         return packageService.registerPackage(packageDTO);

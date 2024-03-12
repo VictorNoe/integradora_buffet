@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @CrossOrigin(origins = {"*"})
 public class CategoryController {
 
+    private final CategoryService categoryService;
     @Autowired
-    private CategoryService categoryService;
+
+    public CategoryController(CategoryService _categoryService) {
+        this.categoryService = _categoryService;
+    }
+
     @PostMapping(value = "/addCategory", produces = "application/json")
     public ResponseEntity<CustomResponse> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         return categoryService.insertCategory(categoryDTO);

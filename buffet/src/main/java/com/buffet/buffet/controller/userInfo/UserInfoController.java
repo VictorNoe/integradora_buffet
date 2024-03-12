@@ -13,8 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequestMapping("/api/userInfo")
 @CrossOrigin(origins = {"*"})
 public class UserInfoController {
+    private final UserInfoService userInfoService;
     @Autowired
-    private UserInfoService userInfoService;
+
+    public UserInfoController(UserInfoService _userInfoService) {
+        this.userInfoService = _userInfoService;
+    }
+
     @PostMapping(value = "/pageUsers", produces = "application/json")
     public ResponseEntity<CustomResponse> getAll(Pageable page){
         return this.userInfoService.getAll(page);

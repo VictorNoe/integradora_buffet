@@ -13,10 +13,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/order")
 @CrossOrigin(origins = {"*"})
 public class OrderController {
+    private final OrderService orderService;
     @Autowired
-    private OrderService orderService;
+
+    public OrderController(OrderService _orderService) {
+        this.orderService = _orderService;
+    }
+
     @PostMapping(value = "/addOrder", produces = "application/json")
-    public ResponseEntity<CustomResponse> addOrder(@Valid @RequestBody OrderDTO orderDTO) {
+        public ResponseEntity<CustomResponse> addOrder(@Valid @RequestBody OrderDTO orderDTO) {
+        System.out.println(orderDTO);
         return orderService.register(orderDTO);
     }
     @PostMapping(value = "/updateStatus", produces = "application/json")

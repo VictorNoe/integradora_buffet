@@ -28,14 +28,19 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class UserAccountServices {
+    private final UserAccountRepository userAccountRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final UserTypeRepository userTypeRepository;
+    private final StatusRepository statusRepository;
     @Autowired
-    private UserAccountRepository userAccountRepository;
-    @Autowired
-    private UserInfoRepository userInfoRepository;
-    @Autowired
-    private UserTypeRepository userTypeRepository;
-    @Autowired
-    private StatusRepository statusRepository;
+
+    public UserAccountServices(UserAccountRepository _userAccountRepository, UserInfoRepository _userInfoRepository, UserTypeRepository _userTypeRepository, StatusRepository _statusRepository) {
+        this.userAccountRepository = _userAccountRepository;
+        this.userInfoRepository = _userInfoRepository;
+        this.userTypeRepository = _userTypeRepository;
+        this.statusRepository = _statusRepository;
+    }
+
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerUser(UserDTO userdto) {
         try {

@@ -29,16 +29,21 @@ import java.util.Random;
 @Service
 @Slf4j
 public class OrderService {
+    private final OrderRepository orderRepository;
+    private final PackageRepository packageRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final StatusRepository statusRepository;
+    private final UserTypeRepository userTypeRepository;
     @Autowired
-    OrderRepository orderRepository;
-    @Autowired
-    PackageRepository packageRepository;
-    @Autowired
-    UserAccountRepository userAccountRepository;
-    @Autowired
-    StatusRepository statusRepository;
-    @Autowired
-    UserTypeRepository userTypeRepository;
+
+    public OrderService(OrderRepository _orderRepository, PackageRepository _packageRepository, UserAccountRepository _userAccountRepository, StatusRepository _statusRepository, UserTypeRepository _userTypeRepository) {
+        this.orderRepository = _orderRepository;
+        this.packageRepository = _packageRepository;
+        this.userAccountRepository = _userAccountRepository;
+        this.statusRepository = _statusRepository;
+        this.userTypeRepository = _userTypeRepository;
+    }
+
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> register(OrderDTO orderDTO){
         Optional<Status> statusExist = statusRepository.findByStatus("required");
