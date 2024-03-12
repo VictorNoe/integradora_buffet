@@ -1,7 +1,7 @@
 package com.buffet.buffet.controller.order;
 
-import com.buffet.buffet.controller.order.orderDto.OrderDTO;
-import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
+import com.buffet.buffet.controller.order.orderdto.OrderDTO;
+import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.services.orders.OrderService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;

@@ -1,8 +1,8 @@
 package com.buffet.buffet.controller.userAccount;
 
-import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
-import com.buffet.buffet.model.AuthRequest.AuthRequest;
-import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
+import com.buffet.buffet.controller.userAccount.useraccountdto.UserDTO;
+import com.buffet.buffet.model.authrequest.AuthRequest;
+import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;

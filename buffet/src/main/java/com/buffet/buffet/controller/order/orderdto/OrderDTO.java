@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.order.orderDto;
+package com.buffet.buffet.controller.order.orderdto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

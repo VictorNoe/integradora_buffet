@@ -1,4 +1,4 @@
-package com.buffet.buffet.model.package_has_comment;
+package com.buffet.buffet.model.packagehascomment;
 
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.useraccount.UserAccount;

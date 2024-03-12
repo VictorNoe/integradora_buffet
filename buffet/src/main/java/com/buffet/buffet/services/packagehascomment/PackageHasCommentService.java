@@ -2,7 +2,7 @@ package com.buffet.buffet.services.packagehascomment;
 
 import com.buffet.buffet.model.Package.Package;
 import com.buffet.buffet.model.Package.PackageRepository;
-import com.buffet.buffet.model.package_has_comment.PackageHasCommentRepository;
+import com.buffet.buffet.model.packagehascomment.PackageHasCommentRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

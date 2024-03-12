@@ -1,4 +1,4 @@
-package com.buffet.buffet.model.AuthRequest;
+package com.buffet.buffet.model.authrequest;
 
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;

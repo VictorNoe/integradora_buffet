@@ -1,4 +1,4 @@
-package com.buffet.buffet.model.package_has_comment;
+package com.buffet.buffet.model.packagehascomment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

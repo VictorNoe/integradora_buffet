@@ -1,4 +1,4 @@
-package com.buffet.buffet.model.UpdateStatus;
+package com.buffet.buffet.model.updatestatus;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

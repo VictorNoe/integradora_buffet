@@ -1,7 +1,7 @@
 package com.buffet.buffet.services.useraccount;
-import com.buffet.buffet.controller.userAccount.userAccountDTO.UserDTO;
-import com.buffet.buffet.model.AuthRequest.AuthRequest;
-import com.buffet.buffet.model.UpdateStatus.UpdateStatus;
+import com.buffet.buffet.controller.userAccount.useraccountdto.UserDTO;
+import com.buffet.buffet.model.authrequest.AuthRequest;
+import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.status.StatusRepository;
 import com.buffet.buffet.model.useraccount.UserAccount;
