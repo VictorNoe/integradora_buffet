@@ -27,7 +27,7 @@ public class PackageService {
     private final StatusRepository statusRepository;
     @Autowired
 
-    private PackageService(PackageRepository packageRepository, CategoryRepository categoryRepository, StatusRepository statusRepository) {
+    public PackageService(PackageRepository packageRepository, CategoryRepository categoryRepository, StatusRepository statusRepository) {
         this.packageRepository = packageRepository;
         this.categoryRepository = categoryRepository;
         this.statusRepository = statusRepository;

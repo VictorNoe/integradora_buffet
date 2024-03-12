@@ -34,7 +34,7 @@ public class UserAccountServices {
     private final StatusRepository statusRepository;
     @Autowired
 
-    private UserAccountServices(UserAccountRepository userAccountRepository, UserInfoRepository userInfoRepository, UserTypeRepository userTypeRepository, StatusRepository statusRepository) {
+    public UserAccountServices(UserAccountRepository userAccountRepository, UserInfoRepository userInfoRepository, UserTypeRepository userTypeRepository, StatusRepository statusRepository) {
         this.userAccountRepository = userAccountRepository;
         this.userInfoRepository = userInfoRepository;
         this.userTypeRepository = userTypeRepository;

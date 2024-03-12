@@ -36,7 +36,7 @@ public class OrderService {
     private final UserTypeRepository userTypeRepository;
     @Autowired
 
-    private OrderService(OrderRepository orderRepository, PackageRepository packageRepository, UserAccountRepository userAccountRepository, StatusRepository statusRepository, UserTypeRepository userTypeRepository) {
+    public OrderService(OrderRepository orderRepository, PackageRepository packageRepository, UserAccountRepository userAccountRepository, StatusRepository statusRepository, UserTypeRepository userTypeRepository) {
         this.orderRepository = orderRepository;
         this.packageRepository = packageRepository;
         this.userAccountRepository = userAccountRepository;
