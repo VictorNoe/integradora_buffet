@@ -28,7 +28,7 @@ public class UserInfo {
     @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(generator = "UUID")
-    private UUID id_user_info;
+    private UUID idUserInfo;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -42,16 +42,16 @@ public class UserInfo {
     private Date createdAt;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(nullable = true)
-    private Date modified_at;
+    private Date modifiedAt;
     @ManyToOne(optional = false, targetEntity = UserType.class)
     @JoinColumn(nullable = false, name = "fk_user_type", referencedColumnName = "id_user_type")
     private UserType fkUserType;
     @PrePersist
     public void prePresist(){
         this.createdAt = new Date();
-        this.modified_at = new Date();
-        if (this.id_user_info == null) {
-            this.id_user_info = UUID.randomUUID();
+        this.modifiedAt = new Date();
+        if (this.idUserInfo == null) {
+            this.idUserInfo = UUID.randomUUID();
         }
     }
 

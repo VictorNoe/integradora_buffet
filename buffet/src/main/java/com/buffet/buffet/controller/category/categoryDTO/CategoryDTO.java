@@ -15,5 +15,5 @@ public class CategoryDTO {
     private Integer id;
     @Pattern(regexp = "^[a-zA-Z ]+$", message = "El nombre no debe contener caracteres especiales")
     @NotEmpty(message = "El nombre no puede estar en blanco")
-    private String category_name;
+    private String categoryName;
 }

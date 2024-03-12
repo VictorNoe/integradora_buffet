@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.userAccount.useraccountdto;
+package com.buffet.buffet.controller.useraccount.useraccountdto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;

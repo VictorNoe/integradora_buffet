@@ -34,6 +34,8 @@ public class OrderService {
     private final UserAccountRepository userAccountRepository;
     private final StatusRepository statusRepository;
     private final UserTypeRepository userTypeRepository;
+    Random random = new Random();
+
     @Autowired
 
     public OrderService(OrderRepository orderRepository, PackageRepository packageRepository, UserAccountRepository userAccountRepository, StatusRepository statusRepository, UserTypeRepository userTypeRepository) {
@@ -46,7 +48,7 @@ public class OrderService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> register(OrderDTO orderDTO) {
-        Optional<Status> statusExist = statusRepository.findByStatus("required");
+        Optional<Status> statusExist = statusRepository.findByStatusName("required");
         if (statusExist.isEmpty()) {
             log.error("Status inexistente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -67,7 +69,7 @@ public class OrderService {
         }
 
         Package packageExist = this.packageRepository.findByPackageName(orderDTO.getPackageName());
-        if (packageExist == null || Objects.equals(packageExist.getStatus().getStatus(), "disabled")) {
+        if (packageExist == null || Objects.equals(packageExist.getStatus().getStatusName(), "disabled")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el paquete que intenta solicitar no está disponible"));
         }
@@ -89,7 +91,7 @@ public class OrderService {
         orderSave.setPaymentMethod(null);
         orderSave.setStatus(statusExist.get());
         orderSave.setPostalCode(orderDTO.getPostalCode());
-        orderSave.setOrderDate(new Date());//Cambiar por date solicitado
+        orderSave.setOrderDate(new Date());
         orderSave.setUserAccount(user);
         orderSave.setServicePackage(packageExist);
 
@@ -98,7 +100,7 @@ public class OrderService {
     }
    @Transactional(rollbackFor = {SQLException.class})
    public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
-        Optional<Status> existStatus = this.statusRepository.findByStatus(updateStatus.getStatus());
+        Optional<Status> existStatus = this.statusRepository.findByStatusName(updateStatus.getStatus());
         if (existStatus.isPresent()){
             Order orderUpdate = this.orderRepository.findByNumOrder(updateStatus.getName());
             if (orderUpdate!=null){
@@ -126,15 +128,10 @@ public class OrderService {
     }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> findAllOrdersRequired(){
-        Optional<Status> status = this.statusRepository.findByStatus("required");
-        if (status.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findByStatus(status.get()),false,200,"OK"));
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Status invalido"));
-        }
+        Optional<Status> status = this.statusRepository.findByStatusName("required");
+        return status.map(value -> ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findByStatus(value), false, 200, "OK"))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido")));
     }
     public String generateRandomOrderNumber() {
-        Random random = new Random();
         int randomNumber = 10000 + random.nextInt(90000);
         return String.valueOf(randomNumber);
     }

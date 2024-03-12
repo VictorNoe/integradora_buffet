@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.userInfo;
+package com.buffet.buffet.controller.userinfo;
 
 import com.buffet.buffet.services.userinfo.UserInfoService;
 import com.buffet.buffet.utils.CustomResponse;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 @RequestMapping("/api/userInfo")
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:5173/"})
 public class UserInfoController {
     private final UserInfoService userInfoService;
     @Autowired

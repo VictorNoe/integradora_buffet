@@ -41,18 +41,18 @@ public class PackageService {
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre ya ha sido registrado"));
         }
 
-        Optional<Status> status = statusRepository.findByStatus("enable");
+        Optional<Status> status = statusRepository.findByStatusName("enable");
         if (status.isEmpty()) {
             log.error("Status inexistente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no valido"));
         }
 
         Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
         if (category.isEmpty()) {
             log.error("Categoría inexistente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoría no encontrada"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoría invalida"));
         }
 
         Package packageSave = new Package();
@@ -69,7 +69,7 @@ public class PackageService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre del paquete no existe"));
         }
-        Optional<Status> status = statusRepository.findByStatus("enable");
+        Optional<Status> status = statusRepository.findByStatusName("enable");
         if(status.isPresent()){
             Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
             if (category.isPresent()){
@@ -88,7 +88,7 @@ public class PackageService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
-        Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
+        Optional<Status> statusExist = statusRepository.findByStatusName(updateStatus.getStatus());
     if (statusExist.isPresent()){
         Package packageUpdate = this.packageRepository.findByPackageName(updateStatus.getName());
         if(packageUpdate==null){
@@ -100,7 +100,7 @@ public class PackageService {
     }else {
         log.error("Status inexistente");
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+                .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status inexistente"));
     }
     }
         @Transactional(readOnly = true)
@@ -114,7 +114,7 @@ public class PackageService {
         if (packageExist != null) {
             return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageExist, false, 200, "OK"));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, 404, "Paquete no encontrado"));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, 404, "Paquete invalido"));
 
         }
     }

@@ -33,14 +33,14 @@ public class CategoryService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> insertCategory(CategoryDTO categoryDTO){
 
-        Optional<Category> existName = categoryRepository.findByCategoryName(categoryDTO.getCategory_name());
+        Optional<Category> existName = categoryRepository.findByCategoryName(categoryDTO.getCategoryName());
         if(existName.isPresent()){
             log.error("Nombre de categoria ya existe");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre de la categoria ya existe"));
         }
         Category category = new Category();
-        category.setCategoryName(categoryDTO.getCategory_name());
+        category.setCategoryName(categoryDTO.getCategoryName());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CustomResponse(categoryRepository.save(category), false, HttpStatus.CREATED.value(), "Categoria registrada"));
     }

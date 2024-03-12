@@ -40,10 +40,10 @@ public class UserAccount {
     private String token;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column
-    private Date login_time;
+    private Date loginTime;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column
-    private Date logout_time;
+    private Date logoutTime;
     @OneToOne(optional = false)
     @JoinColumn(name = "fk_user_info", referencedColumnName = "id_user_info")
     private UserInfo fkUserInfo;

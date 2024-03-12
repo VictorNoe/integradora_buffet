@@ -6,6 +6,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface StatusRepository extends JpaRepository<Status, UUID> {
-    Optional<Status> findByStatus(String status);
+    Optional<Status> findByStatusName(String status);
 
 }

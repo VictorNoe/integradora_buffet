@@ -26,7 +26,7 @@ public class Status {
     private UUID idStatus;
 
     @Column(name = "status_name",nullable = false)
-    private String status;
+    private String statusName;
     @PrePersist
     private void generateUUID() {
         if (this.idStatus == null) {

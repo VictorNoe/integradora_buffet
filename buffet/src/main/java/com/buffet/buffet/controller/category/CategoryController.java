@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/category")
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:5173/"})
 public class CategoryController {
 
     private final CategoryService categoryService;

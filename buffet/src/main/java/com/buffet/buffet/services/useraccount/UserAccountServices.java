@@ -1,5 +1,5 @@
 package com.buffet.buffet.services.useraccount;
-import com.buffet.buffet.controller.userAccount.useraccountdto.UserDTO;
+import com.buffet.buffet.controller.useraccount.useraccountdto.UserDTO;
 import com.buffet.buffet.model.authrequest.AuthRequest;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.model.status.Status;
@@ -55,9 +55,9 @@ public class UserAccountServices {
             if(userType.isEmpty()){
                 log.error("Tipo de usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Usuario invalido"));
             }
-            Optional<Status> status = statusRepository.findByStatus("enable");
+            Optional<Status> status = statusRepository.findByStatusName("enable");
             if(status.isPresent()){
 
                 userInfoModel.setFkUserType(userType.get());
@@ -97,11 +97,11 @@ public class UserAccountServices {
             }
             Optional<UserType> userType = userTypeRepository.findByUserType("Worker");
             if(userType.isEmpty()){
-                log.error("Tipo de usuario invalido");
+                log.error("Usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
             }
-            Optional<Status> status = statusRepository.findByStatus("enable");
+            Optional<Status> status = statusRepository.findByStatusName("enable");
             if(status.isPresent()){
 
                 userInfoModel.setFkUserType(userType.get());
@@ -115,11 +115,11 @@ public class UserAccountServices {
                 userAccountModel.setPassword(userdto.getPassword());
                 userAccountModel.setFkStatus(status.get());
                 return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado"));
+                        .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado correctamente"));
             }else {
                 log.error("Status inexistente");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido"));
 
             }
         }catch (Exception e){
@@ -178,7 +178,7 @@ public class UserAccountServices {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
-        Optional<Status> statusExist = statusRepository.findByStatus(updateStatus.getStatus());
+        Optional<Status> statusExist = statusRepository.findByStatusName(updateStatus.getStatus());
         if (statusExist.isPresent()){
             UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName());
             if(userUpdate==null){
@@ -190,7 +190,7 @@ public class UserAccountServices {
         }else {
             log.error("Status inexistente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido"));
         }
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/packageHasComment")
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:5173/"})
 public class PackageHasCommentController {
     private final PackageHasCommentService packageHasCommentService;
     @Autowired

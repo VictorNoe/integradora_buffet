@@ -1,6 +1,6 @@
-package com.buffet.buffet.controller.userAccount;
+package com.buffet.buffet.controller.useraccount;
 
-import com.buffet.buffet.controller.userAccount.useraccountdto.UserDTO;
+import com.buffet.buffet.controller.useraccount.useraccountdto.UserDTO;
 import com.buffet.buffet.model.authrequest.AuthRequest;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/userAccount")
-@CrossOrigin(origins = {"*"})
+@CrossOrigin(origins = {"http://localhost:5173/"})
 public class UserAccountController {
     private final UserAccountServices userAccountService;
     @Autowired
