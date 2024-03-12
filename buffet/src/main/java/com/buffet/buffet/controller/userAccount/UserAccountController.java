@@ -17,8 +17,8 @@ public class UserAccountController {
     private final UserAccountServices userAccountService;
     @Autowired
 
-    public UserAccountController(UserAccountServices _userAccountService) {
-        this.userAccountService = _userAccountService;
+    public UserAccountController(UserAccountServices userAccountService) {
+        this.userAccountService = userAccountService;
     }
 
     @PostMapping(value = "/register", produces = "application/json")
@@ -35,7 +35,6 @@ public class UserAccountController {
     }
     @PutMapping(value = "/updateStatus", produces = "application/json")
     public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
-        System.out.println(updateStatus);
         return userAccountService.updateStatus(updateStatus);
     }
     @GetMapping(value = "/getWorkers", produces = "application/json")
@@ -48,7 +47,6 @@ public class UserAccountController {
     }
     @PostMapping(value = "/getInfoUser", produces = "application/json")
     public ResponseEntity<CustomResponse> getInfoUser(@RequestParam String email ){
-        System.out.println(email);
         return this.userAccountService.getInfoUser(email);
     }
 }

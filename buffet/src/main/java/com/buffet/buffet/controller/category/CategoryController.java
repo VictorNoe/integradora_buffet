@@ -21,8 +21,8 @@ public class CategoryController {
     private final CategoryService categoryService;
     @Autowired
 
-    public CategoryController(CategoryService _categoryService) {
-        this.categoryService = _categoryService;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @PostMapping(value = "/addCategory", produces = "application/json")

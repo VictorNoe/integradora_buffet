@@ -34,11 +34,11 @@ public class UserAccountServices {
     private final StatusRepository statusRepository;
     @Autowired
 
-    public UserAccountServices(UserAccountRepository _userAccountRepository, UserInfoRepository _userInfoRepository, UserTypeRepository _userTypeRepository, StatusRepository _statusRepository) {
-        this.userAccountRepository = _userAccountRepository;
-        this.userInfoRepository = _userInfoRepository;
-        this.userTypeRepository = _userTypeRepository;
-        this.statusRepository = _statusRepository;
+    public UserAccountServices(UserAccountRepository userAccountRepository, UserInfoRepository userInfoRepository, UserTypeRepository userTypeRepository, StatusRepository statusRepository) {
+        this.userAccountRepository = userAccountRepository;
+        this.userInfoRepository = userInfoRepository;
+        this.userTypeRepository = userTypeRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})

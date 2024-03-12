@@ -15,8 +15,8 @@ public class UserInfoService {
     private final UserInfoRepository repository;
     @Autowired
 
-    public UserInfoService(UserInfoRepository _repository) {
-        this.repository = _repository;
+    public UserInfoService(UserInfoRepository repository) {
+        this.repository = repository;
     }
 
     public ResponseEntity<CustomResponse> getAll(Pageable page) {

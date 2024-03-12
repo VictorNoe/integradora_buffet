@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 public class WorkerAssignmentController {
     private final WorkerAssignmentService workerAssignmentService;
     @Autowired
-    public WorkerAssignmentController(WorkerAssignmentService _workerAssignmentService) {
-        this.workerAssignmentService = _workerAssignmentService;
+    public WorkerAssignmentController(WorkerAssignmentService workerAssignmentService) {
+        this.workerAssignmentService = workerAssignmentService;
     }
     @PostMapping(value = "/assignOrder", produces = "application/json")
     public ResponseEntity<CustomResponse> register(@Valid @RequestBody AssignmentDTO assignmentDTO) {

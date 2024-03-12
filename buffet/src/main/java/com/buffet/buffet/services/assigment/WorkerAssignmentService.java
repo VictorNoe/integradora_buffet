@@ -26,10 +26,10 @@ public class WorkerAssignmentService {
    private final OrderRepository orderRepository;
     @Autowired
 
-    public WorkerAssignmentService(WorkerAssignmentRepository _workerAssignmentRepository, UserAccountRepository _userAccountRepository, OrderRepository _orderRepository) {
-        this.workerAssignmentRepository = _workerAssignmentRepository;
-        this.userAccountRepository = _userAccountRepository;
-        this.orderRepository = _orderRepository;
+    public WorkerAssignmentService(WorkerAssignmentRepository workerAssignmentRepository, UserAccountRepository userAccountRepository, OrderRepository orderRepository) {
+        this.workerAssignmentRepository = workerAssignmentRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})

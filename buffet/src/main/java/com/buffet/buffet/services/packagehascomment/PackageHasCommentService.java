@@ -20,9 +20,9 @@ public class PackageHasCommentService {
    private final PackageHasCommentRepository packageHasCommentRepository;
     private final  PackageRepository packageRepository;
     @Autowired
-    public PackageHasCommentService(PackageHasCommentRepository _packageHasCommentRepository, PackageRepository _packageRepository) {
-        this.packageHasCommentRepository = _packageHasCommentRepository;
-        this.packageRepository = _packageRepository;
+    public PackageHasCommentService(PackageHasCommentRepository packageHasCommentRepository, PackageRepository packageRepository) {
+        this.packageHasCommentRepository = packageHasCommentRepository;
+        this.packageRepository = packageRepository;
     }
 
     @Transactional(readOnly = true)

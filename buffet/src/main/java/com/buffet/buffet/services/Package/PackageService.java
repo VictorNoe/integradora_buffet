@@ -27,10 +27,10 @@ public class PackageService {
     private final StatusRepository statusRepository;
     @Autowired
 
-    public PackageService(PackageRepository _packageRepository, CategoryRepository _categoryRepository, StatusRepository _statusRepository) {
-        this.packageRepository = _packageRepository;
-        this.categoryRepository = _categoryRepository;
-        this.statusRepository = _statusRepository;
+    public PackageService(PackageRepository packageRepository, CategoryRepository categoryRepository, StatusRepository statusRepository) {
+        this.packageRepository = packageRepository;
+        this.categoryRepository = categoryRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})

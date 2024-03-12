@@ -1,14 +1,11 @@
 package com.buffet.buffet.model.payment;
 
-import com.buffet.buffet.model.status.Status;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +23,7 @@ public class Payment {
     @Id
     @GeneratedValue(generator = "UUID")
     @Column(name = "id_payment")
-    private UUID id_payment;
+    private UUID idPayment;
 
     @Column(name = "payment_method")
     private String paymentMethod;
@@ -41,8 +38,8 @@ public class Payment {
 
     @PrePersist
     private void generateUUID() {
-        if (this.id_payment == null) {
-            this.id_payment = UUID.randomUUID();
+        if (this.idPayment == null) {
+            this.idPayment = UUID.randomUUID();
         }
     }
 }

@@ -16,8 +16,8 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
     @Autowired
 
-    public UserInfoController(UserInfoService _userInfoService) {
-        this.userInfoService = _userInfoService;
+    public UserInfoController(UserInfoService userInfoService) {
+        this.userInfoService = userInfoService;
     }
 
     @PostMapping(value = "/pageUsers", produces = "application/json")

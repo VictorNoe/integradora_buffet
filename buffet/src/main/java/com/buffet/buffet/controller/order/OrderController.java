@@ -16,13 +16,12 @@ public class OrderController {
     private final OrderService orderService;
     @Autowired
 
-    public OrderController(OrderService _orderService) {
-        this.orderService = _orderService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @PostMapping(value = "/addOrder", produces = "application/json")
         public ResponseEntity<CustomResponse> addOrder(@Valid @RequestBody OrderDTO orderDTO) {
-        System.out.println(orderDTO);
         return orderService.register(orderDTO);
     }
     @PostMapping(value = "/updateStatus", produces = "application/json")

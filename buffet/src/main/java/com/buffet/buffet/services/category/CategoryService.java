@@ -21,8 +21,8 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     @Autowired
 
-    public CategoryService(CategoryRepository _categoryRepository) {
-        this.categoryRepository = _categoryRepository;
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     @Transactional(readOnly = true)

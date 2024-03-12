@@ -36,12 +36,12 @@ public class OrderService {
     private final UserTypeRepository userTypeRepository;
     @Autowired
 
-    public OrderService(OrderRepository _orderRepository, PackageRepository _packageRepository, UserAccountRepository _userAccountRepository, StatusRepository _statusRepository, UserTypeRepository _userTypeRepository) {
-        this.orderRepository = _orderRepository;
-        this.packageRepository = _packageRepository;
-        this.userAccountRepository = _userAccountRepository;
-        this.statusRepository = _statusRepository;
-        this.userTypeRepository = _userTypeRepository;
+    public OrderService(OrderRepository orderRepository, PackageRepository packageRepository, UserAccountRepository userAccountRepository, StatusRepository statusRepository, UserTypeRepository userTypeRepository) {
+        this.orderRepository = orderRepository;
+        this.packageRepository = packageRepository;
+        this.userAccountRepository = userAccountRepository;
+        this.statusRepository = statusRepository;
+        this.userTypeRepository = userTypeRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
