@@ -34,8 +34,6 @@ public class Payment {
     private Date transactionDate;
     @Column(name = "transaction_description")
     private String transactionDescription;
-
-
     @PrePersist
     private void generateUUID() {
         if (this.idPayment == null) {

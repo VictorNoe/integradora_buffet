@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.Package.packagedto;
+package com.buffet.buffet.controller.servicepackage.packagedto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -12,12 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 public class PackageDTO {
-    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "El nombre no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s ]+$", message = "El nombre no debe contener caracteres especiales")
     @NotEmpty(message = "El nombre no puede estar en blanco")
     private String packageName;
-    @NotEmpty(message = "La imagen no puede estar vacia")
-    private String image;
-    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "La descripcion no debe contener caracteres especiales")
+
+    @Pattern(regexp = "^[a-zA-Z0-9\\s ]+$", message = "La descripcion no debe contener caracteres especiales")
     @NotEmpty(message = "La descripcion no puede estar en blanco")
     private String packageDescription;
     @NotNull(message = "El precio no puede estar vacio")
@@ -26,5 +25,6 @@ public class PackageDTO {
     private Integer ability;
     @NotNull(message = "Debes agregar una categoria")
     private String category;
+    private ImageDTO[] images;
 
 }

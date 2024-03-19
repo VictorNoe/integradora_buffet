@@ -1,8 +1,8 @@
-package com.buffet.buffet.controller.Package;
+package com.buffet.buffet.controller.servicepackage;
 
-import com.buffet.buffet.controller.Package.packagedto.PackageDTO;
+import com.buffet.buffet.controller.servicepackage.packagedto.PackageDTO;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
-import com.buffet.buffet.services.Package.PackageService;
+import com.buffet.buffet.services.servicepackage.PackageService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

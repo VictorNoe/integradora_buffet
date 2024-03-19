@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
     private Double orderPrice;
     @NotEmpty(message = "La calle no puede estar en blanco")
-    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "La calle no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "La calle no debe contener caracteres especiales")
     private String street;
     @NotEmpty(message = "La colonia no puede estar en blanco")
     @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "La colonia no debe contener caracteres especiales")
@@ -24,7 +24,7 @@ public class OrderDTO {
     @NotEmpty(message = "El estado no puede estar en blanco")
     @Pattern(regexp = "^[a-zA-Z]+$", message = "El estado no debe contener caracteres especiales")
     private String city;
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "La referencia no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z\\s]+$", message = "La referencia no debe contener caracteres especiales")
     private String comments;
     private String userEmail;
     private String packageName;

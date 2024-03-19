@@ -1,7 +1,8 @@
 package com.buffet.buffet.model.orders;
 
 
-import com.buffet.buffet.model.Package.Package;
+import com.buffet.buffet.model.address.Address;
+import com.buffet.buffet.model.servicepackage.ServicePackage;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.payment.Payment;
 import com.buffet.buffet.model.useraccount.UserAccount;
@@ -13,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,26 +32,16 @@ public class Order {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @Column(name = "id_order")
-    private UUID id;
-    @Column(name = "num_order")
+    @Column(name = "id_package_order")
+    private UUID idPackageOrder;
+    @Column(name = "num_order",nullable = false)
     private String numOrder;
     @JsonFormat(pattern="yyyy-MM-dd")
-    @Column(name = "order_date")
+    @Column(name = "order_date",nullable = false)
     private Date orderDate;
 
-    @Column(name = "order_price")
+    @Column(name = "order_price",nullable = false)
     private Double orderPrice;
-    @Column(name = "street")
-    private String street;
-    @Column(name = "distric")
-    private String disctric;
-    @Column(name = "postal_code")
-    private String postalCode;
-    @Column(name = "city")
-    private String city;
-    @Column(name = "comments")
-    private String comments;
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "created_at")
     private Date createdAt;
@@ -58,8 +50,8 @@ public class Order {
     private UserAccount userAccount;
 
     @ManyToOne
-    @JoinColumn(name = "fk_package")
-    private Package servicePackage;
+    @JoinColumn(name = "fk_service_package")
+    private ServicePackage servicePackage;
 
     @ManyToOne
     @JoinColumn(name = "fk_status")
@@ -67,12 +59,18 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "fk_payment")
-    private Payment paymentMethod;
+    private Payment payment;
+    @OneToOne(optional = false, targetEntity = Address.class)
+    @JoinColumn(name = "fk_address", referencedColumnName = "id_address")
+    private Address address;
     @PrePersist
     public void prePresist(){
-        this.createdAt = new Date();
-        if (this.id == null) {
-            this.id = UUID.randomUUID();
+        Date currentDateOrder= new Date();
+        if (this.createdAt==null){
+            this.createdAt = currentDateOrder;
+        }
+        if (this.idPackageOrder == null) {
+            this.idPackageOrder = UUID.randomUUID();
         }
     }
 }

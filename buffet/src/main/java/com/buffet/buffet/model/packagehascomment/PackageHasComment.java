@@ -1,6 +1,6 @@
 package com.buffet.buffet.model.packagehascomment;
 
-import com.buffet.buffet.model.Package.Package;
+import com.buffet.buffet.model.servicepackage.ServicePackage;
 import com.buffet.buffet.model.useraccount.UserAccount;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
@@ -29,19 +29,22 @@ public class PackageHasComment {
     private UUID idPackageHasComment;
     @Column(name = "comment_text",length = 150)
     private String comment;
-    @Column(name = "comment_point")
+    @Column(name = "comment_point",nullable = false)
     private Integer point;
-    @Column(name = "comment_date")
+    @Column(name = "comment_date",nullable = false)
     private Date commentDate;
     @ManyToOne
     @JoinColumn(name = "fk_user_account")
     private UserAccount userAccount;
     @ManyToOne
-    @JoinColumn(name = "fk_package")
-    private Package servicePackage;
+    @JoinColumn(name = "fk_service_package")
+    private ServicePackage servicePackage;
     @PrePersist
     public void prePresist(){
-        this.commentDate = new Date();
+        Date currentDateComment = new Date();
+        if (commentDate==null){
+            this.commentDate = currentDateComment;
+        }
         if (this.idPackageHasComment == null) {
             this.idPackageHasComment = UUID.randomUUID();
         }

@@ -1,7 +1,7 @@
 package com.buffet.buffet.services.packagehascomment;
 
-import com.buffet.buffet.model.Package.Package;
-import com.buffet.buffet.model.Package.PackageRepository;
+import com.buffet.buffet.model.servicepackage.ServicePackage;
+import com.buffet.buffet.model.servicepackage.ServicePackageRepository;
 import com.buffet.buffet.model.packagehascomment.PackageHasCommentRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -18,19 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class PackageHasCommentService {
    private final PackageHasCommentRepository packageHasCommentRepository;
-    private final  PackageRepository packageRepository;
+    private final ServicePackageRepository packageRepository;
     @Autowired
-    public PackageHasCommentService(PackageHasCommentRepository packageHasCommentRepository, PackageRepository packageRepository) {
+    public PackageHasCommentService(PackageHasCommentRepository packageHasCommentRepository, ServicePackageRepository packageRepository) {
         this.packageHasCommentRepository = packageHasCommentRepository;
         this.packageRepository = packageRepository;
     }
 
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getPackageHasComment(String packageName) {
-        Package packet = packageRepository.findByPackageName(packageName);
+        ServicePackage packet = packageRepository.findByPackageName(packageName);
         if (packet != null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new CustomResponse(packageHasCommentRepository.findByPackage(packet.getId()), false, HttpStatus.OK.value(), "OK"));
+                    .body(new CustomResponse(packageHasCommentRepository.findByPackage(packet.getIdServicePackage()), false, HttpStatus.OK.value(), "OK"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Paquete no encontrado"));

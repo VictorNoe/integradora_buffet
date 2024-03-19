@@ -5,8 +5,8 @@ import com.buffet.buffet.model.assigment.WorkerAssignment;
 import com.buffet.buffet.model.assigment.WorkerAssignmentRepository;
 import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.orders.OrderRepository;
-import com.buffet.buffet.model.useraccount.UserAccount;
-import com.buffet.buffet.model.useraccount.UserAccountRepository;
+import com.buffet.buffet.model.worker.Worker;
+import com.buffet.buffet.model.worker.WorkerRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +22,13 @@ import java.util.List;
 @Slf4j
 public class WorkerAssignmentService {
    private final WorkerAssignmentRepository workerAssignmentRepository;
-   private final UserAccountRepository userAccountRepository;
+   private final WorkerRepository workerRepository;
    private final OrderRepository orderRepository;
     @Autowired
 
-    public WorkerAssignmentService(WorkerAssignmentRepository workerAssignmentRepository, UserAccountRepository userAccountRepository, OrderRepository orderRepository) {
+    public WorkerAssignmentService(WorkerAssignmentRepository workerAssignmentRepository, WorkerRepository workerRepository, OrderRepository orderRepository) {
         this.workerAssignmentRepository = workerAssignmentRepository;
-        this.userAccountRepository = userAccountRepository;
+        this.workerRepository = workerRepository;
         this.orderRepository = orderRepository;
     }
 
@@ -36,14 +36,14 @@ public class WorkerAssignmentService {
     public ResponseEntity<CustomResponse> assignmentOrder(AssignmentDTO assignmentDTO){
         Order existOrder = this.orderRepository.findByNumOrder(assignmentDTO.getNumOrder());
         if (existOrder!=null){
-            UserAccount existUser = this.userAccountRepository.findByEmail(assignmentDTO.getUserEmail());
+            Worker existUser = this.workerRepository.findByNumWorker(assignmentDTO.getNumWorker());
             if (existUser!=null){
                 WorkerAssignment workerAssignmentSaved = new WorkerAssignment();
                 workerAssignmentSaved.setPackageOrder(existOrder);
-                workerAssignmentSaved.setUserAccount(existUser);
+                workerAssignmentSaved.setWorker(existUser);
                 return ResponseEntity.status(HttpStatus.CREATED).body(new CustomResponse(this.workerAssignmentRepository.save(workerAssignmentSaved),false,HttpStatus.CREATED.value(), "Orden asignada"));
             }else {
-                log.error("No existe el usuario: "+assignmentDTO.getUserEmail());
+                log.error("No existe el trabajador: "+assignmentDTO.getNumOrder());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Usuario invalido"));
             }
         }else {
@@ -52,14 +52,14 @@ public class WorkerAssignmentService {
         }
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> getAssignByUser(String email){
-       UserAccount existUser = this.userAccountRepository.findByEmail(email);
+    public ResponseEntity<CustomResponse> getAssignByUser(String numWorker){
+       Worker existUser = this.workerRepository.findByNumWorker(numWorker);
        if (existUser!=null){
-           List<WorkerAssignment> assignmentList = this.workerAssignmentRepository.findByUserAccount_Email(existUser.getEmail());
-           return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(assignmentList,false,HttpStatus.OK.value(), "Lista de asignaciones de usuario "+existUser.getEmail()));
+           List<WorkerAssignment> assignmentList = this.workerAssignmentRepository.findByWorker_NumWorker(existUser.getNumWorker());
+           return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(assignmentList,false,HttpStatus.OK.value(), "Lista de asignaciones de trabajador "+existUser.getNumWorker()));
        }else {
-           log.error("No existe el usuario: "+ email);
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Usuario invalido"));
+           log.error("No existe el trabajador: "+ numWorker);
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Trabajador invalido"));
        }
     }
 }

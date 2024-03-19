@@ -44,7 +44,6 @@ public class UserAccountServices {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerUser(UserDTO userdto) {
         try {
-            log.info("UserDTO -> "+userdto.toString());
             UserAccount userAccountModel = new UserAccount();
             UserInfo userInfoModel = new UserInfo();
             if(userAccountRepository.existsByEmail(userdto.getEmail())){
@@ -68,7 +67,7 @@ public class UserAccountServices {
                 userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
                 userAccountModel.setToken("public");
                 userAccountModel.setEmail(userdto.getEmail());
-                userAccountModel.setPassword(userdto.getPassword());
+                userAccountModel.setUserPassword(userdto.getPassword());
                 userAccountModel.setFkStatus(status.get());
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado"));
@@ -85,57 +84,14 @@ public class UserAccountServices {
         }
 
     }
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<CustomResponse> registerWorker(UserDTO userdto) {
-        try {
-            log.info("UserDTO -> "+userdto.toString());
-            UserAccount userAccountModel = new UserAccount();
-            UserInfo userInfoModel = new UserInfo();
-            if(userAccountRepository.existsByEmail(userdto.getEmail())){
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El correo ya ah sido registrado"));
-            }
-            Optional<UserType> userType = userTypeRepository.findByUserType("Worker");
-            if(userType.isEmpty()){
-                log.error("Usuario invalido");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
-            }
-            Optional<Status> status = statusRepository.findByStatusName("enable");
-            if(status.isPresent()){
 
-                userInfoModel.setFkUserType(userType.get());
-                userInfoModel.setName(userdto.getName());
-                userInfoModel.setLastname(userdto.getLastname());
-                userInfoModel.setPhone(userdto.getPhone());
-
-                userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
-                userAccountModel.setToken("worker");
-                userAccountModel.setEmail(userdto.getEmail());
-                userAccountModel.setPassword(userdto.getPassword());
-                userAccountModel.setFkStatus(status.get());
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado correctamente"));
-            }else {
-                log.error("Status inexistente");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido"));
-
-            }
-        }catch (Exception e){
-            log.error("Error al registrar usuario",e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CustomResponse(e, true,
-                    HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando registrar usuario "+e.getMessage()));
-        }
-
-    }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
         try {
             log.info("Auth request ->"+authRequest.toString());
             UserAccount optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
             if (optionalUserAccount!=null) {
-                boolean existsLogin = Objects.equals(optionalUserAccount.getPassword(), authRequest.getPassword());
+                boolean existsLogin = Objects.equals(optionalUserAccount.getUserPassword(), authRequest.getPassword());
                 if (existsLogin) {
                     String accessToken="1234";
                     UserAccount ua = optionalUserAccount;

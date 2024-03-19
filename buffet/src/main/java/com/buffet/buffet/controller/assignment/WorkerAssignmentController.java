@@ -27,6 +27,6 @@ public class WorkerAssignmentController {
         return workerAssignmentService.assignmentOrder(assignmentDTO);
     }
     @PostMapping(value = "/getAssignByUser", produces = "application/json")
-    public ResponseEntity<CustomResponse> getAssignByUser(@RequestParam String email ){
-        return this.workerAssignmentService.getAssignByUser(email);
+    public ResponseEntity<CustomResponse> getAssignByUser(@RequestParam String numWorker ){
+        return this.workerAssignmentService.getAssignByUser(numWorker);
     }}

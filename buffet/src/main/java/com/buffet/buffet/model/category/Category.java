@@ -1,5 +1,5 @@
 package com.buffet.buffet.model.category;
-import com.buffet.buffet.model.Package.Package;
+import com.buffet.buffet.model.servicepackage.ServicePackage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
@@ -26,18 +26,18 @@ public class Category {
     @Id
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @GeneratedValue(generator = "UUID")
-    @Column(name = "id_category",length = 16)
-    private UUID id;
+    @Column(name = "id_service_category",length = 16)
+    private UUID idServiceCategory;
 
-    @Column(name = "category_name")
+    @Column(name = "category_name",nullable = false)
     private String categoryName;
     @OneToMany(mappedBy = "category")
     @JsonIgnore
-    private List<Package> packages;
+    private List<ServicePackage> packages;
     @PrePersist
     private void generateUUID() {
-        if (this.id == null) {
-            this.id = UUID.randomUUID();
+        if (this.idServiceCategory == null) {
+            this.idServiceCategory = UUID.randomUUID();
         }
     }
 }

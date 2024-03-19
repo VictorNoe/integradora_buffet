@@ -1,8 +1,10 @@
 package com.buffet.buffet.services.orders;
 
 import com.buffet.buffet.controller.order.orderdto.OrderDTO;
-import com.buffet.buffet.model.Package.Package;
-import com.buffet.buffet.model.Package.PackageRepository;
+import com.buffet.buffet.model.address.Address;
+import com.buffet.buffet.model.address.AddressRepository;
+import com.buffet.buffet.model.servicepackage.ServicePackage;
+import com.buffet.buffet.model.servicepackage.ServicePackageRepository;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.orders.OrderRepository;
@@ -20,56 +22,64 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Transactional
 @Service
 @Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
-    private final PackageRepository packageRepository;
+    private final ServicePackageRepository packageRepository;
     private final UserAccountRepository userAccountRepository;
     private final StatusRepository statusRepository;
     private final UserTypeRepository userTypeRepository;
+    private final AddressRepository addressRepository;
     Random random = new Random();
 
     @Autowired
 
-    public OrderService(OrderRepository orderRepository, PackageRepository packageRepository, UserAccountRepository userAccountRepository, StatusRepository statusRepository, UserTypeRepository userTypeRepository) {
+    public OrderService(OrderRepository orderRepository, ServicePackageRepository packageRepository, UserAccountRepository userAccountRepository,
+                        StatusRepository statusRepository, UserTypeRepository userTypeRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.packageRepository = packageRepository;
         this.userAccountRepository = userAccountRepository;
         this.statusRepository = statusRepository;
         this.userTypeRepository = userTypeRepository;
+        this.addressRepository =addressRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> register(OrderDTO orderDTO) {
         Optional<Status> statusExist = statusRepository.findByStatusName("required");
         if (statusExist.isEmpty()) {
-            log.error("Status inexistente");
+            log.error("Status no existe en registrar orden");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no valido en registrar orden"));
         }
 
         Optional<UserType> userType = this.userTypeRepository.findByUserType("worker");
         if (userType.isEmpty()) {
-            log.error("Rol inexistente");
+            log.error("Rol de trabajador no  existe para asignar orden");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Rol no encontrado"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Rol no valido"));
         }
 
         UserAccount user = this.userAccountRepository.findByEmail(orderDTO.getUserEmail());
         if (user == null) {
+            log.error("El usuario que realiza la orden no existe");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el usuario que intenta hacer la solicitud no está registrado"));
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el usuario que intenta hacer la solicitud no es valido"));
         }
 
-        Package packageExist = this.packageRepository.findByPackageName(orderDTO.getPackageName());
-        if (packageExist == null || Objects.equals(packageExist.getStatus().getStatusName(), "disabled")) {
+        ServicePackage packageExist = this.packageRepository.findByPackageName(orderDTO.getPackageName());
+        if (packageExist == null) {
+            log.error("El paquete para la orden no existe");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el paquete que intenta solicitar es invalido"));
+        }
+
+        if (Objects.equals(packageExist.getStatus().getStatusName(), "disabled")) {
+            log.error("El paquete para la orden está deshabilitado");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el paquete que intenta solicitar no está disponible"));
         }
@@ -81,56 +91,85 @@ public class OrderService {
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, hemos alcanzado la capacidad máxima de servicios"));
         }
 
+        Address addressSave = new Address();
+        addressSave.setCity(orderDTO.getCity());
+        addressSave.setDistrict(orderDTO.getDisctric());
+        addressSave.setStreet(orderDTO.getStreet());
+        addressSave.setPostalCode(orderDTO.getPostalCode());
+        addressSave.setComments(orderDTO.getComments());
+        addressSave.setUserAccount(user);
+
         Order orderSave = new Order();
         orderSave.setNumOrder(generateRandomOrderNumber());
-        orderSave.setCity(orderDTO.getCity());
-        orderSave.setStreet(orderDTO.getStreet());
-        orderSave.setOrderPrice(orderDTO.getOrderPrice());
-        orderSave.setComments(orderDTO.getComments());
-        orderSave.setDisctric(orderDTO.getDisctric());
-        orderSave.setPaymentMethod(null);
-        orderSave.setStatus(statusExist.get());
-        orderSave.setPostalCode(orderDTO.getPostalCode());
+        orderSave.setAddress(this.addressRepository.saveAndFlush(addressSave));
         orderSave.setOrderDate(new Date());
+        orderSave.setPayment(null);
         orderSave.setUserAccount(user);
         orderSave.setServicePackage(packageExist);
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CustomResponse(this.orderRepository.save(orderSave), true, HttpStatus.CREATED.value(), "Paquete solicitado con éxito"));
     }
-   @Transactional(rollbackFor = {SQLException.class})
-   public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus) {
         Optional<Status> existStatus = this.statusRepository.findByStatusName(updateStatus.getStatus());
-        if (existStatus.isPresent()){
+        if (existStatus.isPresent()) {
             Order orderUpdate = this.orderRepository.findByNumOrder(updateStatus.getName());
-            if (orderUpdate!=null){
+            if (orderUpdate != null) {
                 orderUpdate.setStatus(existStatus.get());
-                return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.saveAndFlush(orderUpdate),false,HttpStatus.OK.value(), "Status de orden actualizado"));
-            }else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Numero de orden no encontrado"));
+                this.orderRepository.saveAndFlush(orderUpdate);
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new CustomResponse(orderUpdate, false, HttpStatus.OK.value(), "Status de orden actualizado"));
+            } else {
+                log.error("Número de orden no encontrada");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Número de orden no válida"));
             }
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Status no encontrado"));
-        }
-   }
-    @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> findByNumOrder(String numOrder){
-        Order existOrder = this.orderRepository.findByNumOrder(numOrder);
-        if (existOrder!=null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(existOrder,true,HttpStatus.OK.value(), "Orden "+numOrder));
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
+        } else {
+            log.error("El status no está registrado para actualizar orden");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no válido para actualizar orden"));
         }
     }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findByNumOrder(String numOrder) {
+        Order existOrder = this.orderRepository.findByNumOrder(numOrder);
+        if (existOrder != null) {
+            log.info("Número de orden encontrado: {}", numOrder);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new CustomResponse(existOrder, false, HttpStatus.OK.value(), "Orden " + numOrder));
+        } else {
+            log.error("Número de orden a buscar no existe: {}", numOrder);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Orden invalida"));
+        }
+    }
+
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> findAllOrders(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAll(),false,200,"OK"));
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> findAllOrdersRequired(){
+    public ResponseEntity<CustomResponse> findAllOrdersRequired() {
         Optional<Status> status = this.statusRepository.findByStatusName("required");
-        return status.map(value -> ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findByStatus(value), false, 200, "OK"))).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido")));
+
+        if (status.isPresent()) {
+            List<Order> orders = this.orderRepository.findByStatus(status.get());
+            if (!orders.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new CustomResponse(orders, false, HttpStatus.OK.value(), "OK orders"));
+            } else {
+                log.info("No se encontraron órdenes con el estado requerido");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "No hay registro de ordenes solicitadas"));
+            }
+        } else {
+            log.error("Estado requerido no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status inválido"));
+        }
     }
+
     public String generateRandomOrderNumber() {
         int randomNumber = 10000 + random.nextInt(90000);
         return String.valueOf(randomNumber);
