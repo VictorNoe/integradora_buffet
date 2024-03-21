@@ -133,7 +133,9 @@ public class PackageService {
             }
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTOList,false,200,"OK"));
     }
-
+    public ResponseEntity<CustomResponse> getCountPackages(){
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.packageRepository.countServicePackageByStatus_StatusNameAndStatus_StatusDescription("enable","to_package"),false,200,"OK"));
+    }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getPackage(String packageName) {
 

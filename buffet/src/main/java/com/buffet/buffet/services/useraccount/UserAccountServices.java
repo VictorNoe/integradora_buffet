@@ -114,14 +114,14 @@ public class UserAccountServices {
         }
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> getAllWorkers() {
-        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_TypeName("Worker");
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
-    }
-    @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAllClients() {
         List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_TypeName("Public");
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getCountClients() {
+        int countClients = userAccountRepository.countUserAccountByFkUserInfo_FkUserType_TypeName("Public");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(countClients,false,200,"OK"));
     }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getInfoUser(String email) {

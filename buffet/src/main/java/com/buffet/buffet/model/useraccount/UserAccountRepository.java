@@ -11,4 +11,5 @@ boolean existsByEmail(String email);
 UserAccount findByEmail(String email);
 List<UserAccount> findByFkUserInfo_FkUserType_TypeName(String roleName);
 int countUserAccountByFkUserInfo_FkUserType(UserType userType);
+int countUserAccountByFkUserInfo_FkUserType_TypeName(String roleName);
 }

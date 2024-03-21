@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,16 @@ public class WorkerService {
         this.statusRepository=statusRepository;
         this.userTypeRepository = userTypeRepository;
         this.userInfoRepository = userInfoRepository;
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getAllWorkers() {
+        List<Worker> workersList = workerRepository.findByFkUserInfo_FkUserType_TypeName("Worker");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getCountWorkers() {
+        int countClients = workerRepository.countWorkerByFkUserInfo_FkUserType_TypeName("Worker");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(countClients,false,200,"OK"));
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerWorker(WorkerDto workerDto) {

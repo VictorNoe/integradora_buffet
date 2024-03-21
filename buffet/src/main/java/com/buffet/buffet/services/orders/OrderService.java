@@ -150,6 +150,10 @@ public class OrderService {
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAll(),false,200,"OK"));
     }
     @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> countAllOrdersRequired(){
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.countOrderByStatus_StatusName("required"),false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> findAllOrdersRequired() {
         Optional<Status> status = this.statusRepository.findByStatusName("required");
 
