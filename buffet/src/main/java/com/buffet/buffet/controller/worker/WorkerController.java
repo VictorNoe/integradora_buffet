@@ -20,6 +20,14 @@ public class WorkerController {
     }
     @PostMapping(value = "/registerWorker", produces = "application/json")
     public ResponseEntity<CustomResponse> registerWorker(@Valid @RequestBody WorkerDto workerDto) {
-        return workerService.registerWorker(workerDto);
+        return this.workerService.registerWorker(workerDto);
+    }
+    @GetMapping(value = "/getWorkers", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllWorkers( ){
+        return this.workerService.getAllWorkers();
+    }
+    @GetMapping(value = "/getCountWorkers", produces = "application/json")
+    public ResponseEntity<CustomResponse> getCountWorkers( ){
+        return this.workerService.getCountWorkers();
     }
 }

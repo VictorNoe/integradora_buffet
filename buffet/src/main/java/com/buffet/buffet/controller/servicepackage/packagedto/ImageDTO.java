@@ -1,5 +1,6 @@
 package com.buffet.buffet.controller.servicepackage.packagedto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class ImageDTO {
     private String image;
     private Integer numImage;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String packageName;
 }

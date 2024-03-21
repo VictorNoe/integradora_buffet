@@ -1,6 +1,5 @@
 package com.buffet.buffet.services.servicepackage;
 
-import com.buffet.buffet.controller.servicepackage.packagedto.ImageDTO;
 import com.buffet.buffet.controller.servicepackage.packagedto.PackageDTO;
 import com.buffet.buffet.model.packageimage.PackageImage;
 import com.buffet.buffet.model.packageimage.PackageImageRepository;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -125,37 +125,33 @@ public class PackageService {
     }
         @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageRepository.findAll(),false,200,"OK"));
+        List<ServicePackage> serviceList = this.packageRepository.findAll();
+            List<PackageDTO> packageDTOList = new ArrayList<>();
+            for (ServicePackage servicePackage : serviceList) {
+                PackageDTO packageDTO = MapperPackage.createPackageDTO(servicePackage);
+                packageDTOList.add(packageDTO);
+            }
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTOList,false,200,"OK"));
     }
-
+    public ResponseEntity<CustomResponse> getCountPackages(){
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.packageRepository.countServicePackageByStatus_StatusNameAndStatus_StatusDescription("enable","to_package"),false,200,"OK"));
+    }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getPackage(String packageName) {
+
         ServicePackage packageExist = packageRepository.findByPackageName(packageName);
-        List<PackageImage> imageList = packageImageRepository.findAllByServicePackage_PackageName(packageName);
-        PackageDTO packageDTO = new PackageDTO();
-        packageDTO.setPackageName(packageExist.getPackageName());
-        packageDTO.setCategory(packageExist.getCategory().getCategoryName());
-        packageDTO.setPackageDescription(packageExist.getPackageDescription());
-        packageDTO.setAbility(packageExist.getAbility());
-        packageDTO.setPrice(packageDTO.getPrice());
-        packageDTO.setDiscount(packageDTO.getDiscount());
-
-
-        List<ImageDTO> imageDTOList = MapperPackage.mapPackageImagesToImageDTOs(imageList);
-        ImageDTO[] imageDTOArray = imageDTOList.toArray(new ImageDTO[0]);
-
-        packageDTO.setImages(imageDTOArray);
-        if (packageExist != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTO, false, 200, "OK"));
-        } else {
+        if (packageExist == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null, true, 404, "Paquete especifico invalido"));
-
         }
+
+        PackageDTO packageDTO = new PackageDTO();
+        MapperPackage.configurePackageDTO(packageDTO, packageExist);
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTO, false, 200, "OK"));
+
     }
     private ServicePackage saveOrUpdatePackage(PackageDTO packageDTO, Optional<Status> status, Optional<Category> category, ServicePackage packageSave) {
         packageSave.setPackageName(packageDTO.getPackageName());
         packageSave.setPackageDescription(packageDTO.getPackageDescription());
-       //Instancia images
         packageSave.setDiscount(packageDTO.getDiscount());
         packageSave.setPrice(packageDTO.getPrice());
         packageSave.setAbility(packageDTO.getAbility());

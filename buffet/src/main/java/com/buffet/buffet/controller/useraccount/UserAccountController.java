@@ -34,10 +34,6 @@ public class UserAccountController {
     public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
         return userAccountService.updateStatus(updateStatus);
     }
-    @GetMapping(value = "/getWorkers", produces = "application/json")
-    public ResponseEntity<CustomResponse> getAllWorkers( ){
-        return this.userAccountService.getAllWorkers();
-    }
     @GetMapping(value = "/getClients", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllClients( ){
         return this.userAccountService.getAllClients();
@@ -45,5 +41,9 @@ public class UserAccountController {
     @PostMapping(value = "/getInfoUser", produces = "application/json")
     public ResponseEntity<CustomResponse> getInfoUser(@RequestParam String email ){
         return this.userAccountService.getInfoUser(email);
+    }
+    @GetMapping(value = "/getCountClients",produces = "application/json")
+    public ResponseEntity<CustomResponse> getCountClients(){
+        return this.userAccountService.getCountClients();
     }
 }

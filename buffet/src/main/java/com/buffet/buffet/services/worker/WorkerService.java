@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,16 @@ public class WorkerService {
         this.userTypeRepository = userTypeRepository;
         this.userInfoRepository = userInfoRepository;
     }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getAllWorkers() {
+        List<Worker> workersList = workerRepository.findByFkUserInfo_FkUserType_TypeName("Worker");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
+    }
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getCountWorkers() {
+        int countClients = workerRepository.countWorkerByFkUserInfo_FkUserType_TypeName("Worker");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(countClients,false,200,"OK"));
+    }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerWorker(WorkerDto workerDto) {
         try {
@@ -45,7 +56,7 @@ public class WorkerService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El numero de trabajador ya ah sido registrado"));
             }
-            Optional<UserType> userType = userTypeRepository.findByUserType("Worker");
+            Optional<UserType> userType = userTypeRepository.findByTypeName("Worker");
             if(userType.isEmpty()){
                 log.error("Usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)

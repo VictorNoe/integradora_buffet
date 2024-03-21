@@ -1,6 +1,6 @@
 package com.buffet.buffet.controller.category;
 
-import com.buffet.buffet.controller.category.categoryDTO.CategoryDTO;
+import com.buffet.buffet.controller.category.categorydto.CategoryDTO;
 import com.buffet.buffet.services.category.CategoryService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;

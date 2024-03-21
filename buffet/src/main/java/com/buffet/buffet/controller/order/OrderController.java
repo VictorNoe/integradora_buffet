@@ -40,6 +40,10 @@ public class OrderController {
     public ResponseEntity<CustomResponse> getAllOrders() {
         return orderService.findAllOrders();
     }
+    @GetMapping(value = "/getCountOrders", produces = "application/json")
+    public ResponseEntity<CustomResponse> getCountOrders() {
+        return orderService.countAllOrdersRequired();
+    }
     @GetMapping(value = "/getAllOrdersRequired", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllOrdersRequired() {
         return orderService.findAllOrdersRequired();

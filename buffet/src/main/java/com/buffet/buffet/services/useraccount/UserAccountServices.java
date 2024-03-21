@@ -50,7 +50,7 @@ public class UserAccountServices {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El correo ya ah sido registrado"));
             }
-            Optional<UserType> userType = userTypeRepository.findByUserType("Public");
+            Optional<UserType> userType = userTypeRepository.findByTypeName("Public");
             if(userType.isEmpty()){
                 log.error("Tipo de usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -94,12 +94,11 @@ public class UserAccountServices {
                 boolean existsLogin = Objects.equals(optionalUserAccount.getUserPassword(), authRequest.getPassword());
                 if (existsLogin) {
                     String accessToken="1234";
-                    UserAccount ua = optionalUserAccount;
-                    ua.setToken(accessToken);
-                    userAccountRepository.save(ua);
+                    optionalUserAccount.setToken(accessToken);
+                    userAccountRepository.save(optionalUserAccount);
                     return ResponseEntity.ok()
                             .header(HttpHeaders.AUTHORIZATION, "Bearer "+accessToken)
-                            .body(new CustomResponse(userAccountRepository.save(ua), false, HttpStatus.OK.value(), "Sesión iniciada"));
+                            .body(new CustomResponse(userAccountRepository.save(optionalUserAccount), false, HttpStatus.OK.value(), "Sesión iniciada"));
                 } else {
                     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                             new CustomResponse(null, true, HttpStatus.UNAUTHORIZED.value(), "Credenciales inválidas"));
@@ -115,14 +114,14 @@ public class UserAccountServices {
         }
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> getAllWorkers() {
-        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_UserType("Worker");
+    public ResponseEntity<CustomResponse> getAllClients() {
+        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_TypeName("Public");
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
     }
     @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> getAllClients() {
-        List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_UserType("Public");
-        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workersList,false,200,"OK"));
+    public ResponseEntity<CustomResponse> getCountClients() {
+        int countClients = userAccountRepository.countUserAccountByFkUserInfo_FkUserType_TypeName("Public");
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(countClients,false,200,"OK"));
     }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getInfoUser(String email) {
