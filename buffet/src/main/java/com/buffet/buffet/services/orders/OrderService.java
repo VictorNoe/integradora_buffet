@@ -57,7 +57,7 @@ public class OrderService {
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no valido en registrar orden"));
         }
 
-        Optional<UserType> userType = this.userTypeRepository.findByUserType("worker");
+        Optional<UserType> userType = this.userTypeRepository.findByTypeName("worker");
         if (userType.isEmpty()) {
             log.error("Rol de trabajador no  existe para asignar orden");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

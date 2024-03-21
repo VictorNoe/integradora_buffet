@@ -45,7 +45,7 @@ public class WorkerService {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El numero de trabajador ya ah sido registrado"));
             }
-            Optional<UserType> userType = userTypeRepository.findByUserType("Worker");
+            Optional<UserType> userType = userTypeRepository.findByTypeName("Worker");
             if(userType.isEmpty()){
                 log.error("Usuario invalido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)

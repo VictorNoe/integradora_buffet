@@ -24,7 +24,7 @@ public class UserType {
     @GeneratedValue(generator = "UUID")
     private UUID idUserType;
     @Column(name = "type_name",nullable = false)
-    private String userType;
+    private String typeName;
     @PrePersist
     private void generateUUID() {
         if (this.idUserType == null) {

@@ -1,4 +1,4 @@
-package com.buffet.buffet.controller.category.categoryDTO;
+package com.buffet.buffet.controller.category.categorydto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
