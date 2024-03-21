@@ -170,6 +170,16 @@ public class OrderService {
         }
     }
 
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findAllByEmailOrder(String emailAllOrder) {
+        if (this.userAccountRepository.existsByEmail(emailAllOrder)) {
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAllByUserAccountEmail(emailAllOrder), false, 200, "OK"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
+        }
+
+    }
+
     public String generateRandomOrderNumber() {
         int randomNumber = 10000 + random.nextInt(90000);
         return String.valueOf(randomNumber);

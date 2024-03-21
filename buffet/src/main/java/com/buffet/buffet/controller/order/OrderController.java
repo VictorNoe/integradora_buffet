@@ -28,9 +28,13 @@ public class OrderController {
     public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
         return orderService.updateStatus(updateStatus);
     }
-    @PostMapping(value = "/getOrderByNumOrder", produces = "application/json")
-    public ResponseEntity<CustomResponse> getOrderByNumOrder(@RequestBody String numOrder) {
+    @PostMapping(value = "/getOrderByNumOrder/{num}", produces = "application/json")
+    public ResponseEntity<CustomResponse> getOrderByNumOrder(@PathVariable("num") String numOrder) {
         return orderService.findByNumOrder(numOrder);
+    }
+    @PostMapping(value = "/getAllOrderByEmail/{email}", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAllOrderByEmail(@PathVariable("email") String email) {
+        return orderService.findAllByEmailOrder(email);
     }
     @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllOrders() {
