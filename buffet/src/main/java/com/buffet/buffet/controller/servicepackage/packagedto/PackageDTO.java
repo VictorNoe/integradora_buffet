@@ -16,7 +16,7 @@ public class PackageDTO {
     @NotEmpty(message = "El nombre no puede estar en blanco")
     private String packageName;
 
-    @Pattern(regexp = "^[a-zA-Z0-9\\s ]+$", message = "La descripcion no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z0-9\\s]+$", message = "La descripcion no debe contener caracteres especiales")
     @NotEmpty(message = "La descripcion no puede estar en blanco")
     private String packageDescription;
     @NotNull(message = "El precio no puede estar vacio")
