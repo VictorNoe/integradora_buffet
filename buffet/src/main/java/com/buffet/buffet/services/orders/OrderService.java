@@ -12,6 +12,7 @@ import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.status.StatusRepository;
 import com.buffet.buffet.model.useraccount.UserAccount;
 import com.buffet.buffet.model.useraccount.UserAccountRepository;
+import com.buffet.buffet.model.userinfo.UserInfoRepository;
 import com.buffet.buffet.model.usertype.UserType;
 import com.buffet.buffet.model.usertype.UserTypeRepository;
 import com.buffet.buffet.utils.CustomResponse;
@@ -34,23 +35,25 @@ public class OrderService {
     private final StatusRepository statusRepository;
     private final UserTypeRepository userTypeRepository;
     private final AddressRepository addressRepository;
+    private final UserInfoRepository userInfoRepository;
     Random random = new Random();
 
     @Autowired
 
     public OrderService(OrderRepository orderRepository, ServicePackageRepository packageRepository, UserAccountRepository userAccountRepository,
-                        StatusRepository statusRepository, UserTypeRepository userTypeRepository, AddressRepository addressRepository) {
+                        StatusRepository statusRepository, UserTypeRepository userTypeRepository, AddressRepository addressRepository, UserInfoRepository userInfoRepository) {
         this.orderRepository = orderRepository;
         this.packageRepository = packageRepository;
         this.userAccountRepository = userAccountRepository;
         this.statusRepository = statusRepository;
         this.userTypeRepository = userTypeRepository;
         this.addressRepository =addressRepository;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> register(OrderDTO orderDTO) {
-        Optional<Status> statusExist = statusRepository.findByStatusName("required");
+        Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription("required", "to_order");
         if (statusExist.isEmpty()) {
             log.error("Status no existe en registrar orden");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -84,7 +87,7 @@ public class OrderService {
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Lo sentimos, el paquete que intenta solicitar no está disponible"));
         }
 
-        int abilityUsers = this.userAccountRepository.countUserAccountByFkUserInfo_FkUserType(userType.get());
+        int abilityUsers = this.userInfoRepository.countUserInfoByFkUserType(userType.get());
         if (abilityUsers < packageExist.getAbility()) {
             log.error("Capacidad insuficiente");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -102,9 +105,11 @@ public class OrderService {
         Order orderSave = new Order();
         orderSave.setNumOrder(generateRandomOrderNumber());
         orderSave.setAddress(this.addressRepository.saveAndFlush(addressSave));
-        orderSave.setOrderDate(new Date());
+        orderSave.setOrderDate(orderDTO.getOrderDate());
+        orderSave.setOrderPrice(packageExist.getPrice());
         orderSave.setPayment(null);
         orderSave.setUserAccount(user);
+        orderSave.setStatus(statusExist.get());
         orderSave.setServicePackage(packageExist);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CustomResponse(this.orderRepository.save(orderSave), true, HttpStatus.CREATED.value(), "Paquete solicitado con éxito"));

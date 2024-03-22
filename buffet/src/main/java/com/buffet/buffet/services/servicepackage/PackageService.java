@@ -133,6 +133,25 @@ public class PackageService {
             }
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTOList,false,200,"OK"));
     }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> getPackagesAvailable() {
+        Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable", "to_package");
+        if(status.isPresent()){
+            List<ServicePackage> serviceList = this.packageRepository.findByStatus(status.get());
+            List<PackageDTO> packageDTOList = new ArrayList<>();
+            for (ServicePackage servicePackage : serviceList) {
+                PackageDTO packageDTO = MapperPackage.createPackageDTO(servicePackage);
+                packageDTOList.add(packageDTO);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(packageDTOList, false, 200, "OK"));
+        } else {
+            log.error("No se encontró el estado 'enable' para obtener paquetes disponibles");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Estado 'enable' no encontrado para obtener paquetes disponibles"));
+        }
+    }
+
     public ResponseEntity<CustomResponse> getCountPackages(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.packageRepository.countServicePackageByStatus_StatusNameAndStatus_StatusDescription("enable","to_package"),false,200,"OK"));
     }
