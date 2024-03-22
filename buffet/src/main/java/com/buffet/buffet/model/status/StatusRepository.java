@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface StatusRepository extends JpaRepository<Status, UUID> {
     Optional<Status> findByStatusName(String status);
 
+    Optional<Status> findByStatusNameAndStatusDescription(String status, String description);
+
 }

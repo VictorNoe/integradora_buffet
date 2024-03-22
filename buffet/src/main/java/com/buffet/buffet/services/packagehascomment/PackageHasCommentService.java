@@ -30,7 +30,7 @@ public class PackageHasCommentService {
         ServicePackage packet = packageRepository.findByPackageName(packageName);
         if (packet != null) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new CustomResponse(packageHasCommentRepository.findByPackage(packet.getIdServicePackage()), false, HttpStatus.OK.value(), "OK"));
+                    .body(new CustomResponse(packageHasCommentRepository.findByServicePackagePackageName(packageName), false, HttpStatus.OK.value(), "OK"));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Paquete no encontrado"));

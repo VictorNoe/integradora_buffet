@@ -62,15 +62,18 @@ public class WorkerService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
             }
-            Optional<Status> status = statusRepository.findByStatusName("enable");
+            Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable","to_user");
             if(status.isPresent()){
 
                 userInfoModel.setFkUserType(userType.get());
                 userInfoModel.setName(workerDto.getName());
                 userInfoModel.setLastname(workerDto.getLastname());
+                userInfoModel.setSurname(workerDto.getSurname());
                 userInfoModel.setPhone(workerDto.getPhone());
                 worker.setFkUserInfo(userInfoRepository.save(userInfoModel));
-                worker.setNumWorker(worker.getNumWorker());
+                worker.setStartHour(workerDto.getStartHour());
+                worker.setEndHour(workerDto.getEndHour());
+                worker.setNumWorker(workerDto.getNumWorker());
                 worker.setWorkerPassword(workerDto.getWorkerPassword());
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new CustomResponse(workerRepository.save(worker), false, HttpStatus.CREATED.value(), "Trabajador registrado correctamente"));

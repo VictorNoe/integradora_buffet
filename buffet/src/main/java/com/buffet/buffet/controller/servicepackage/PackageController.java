@@ -50,4 +50,8 @@ public class PackageController {
     public ResponseEntity<CustomResponse> getPackage(@PathVariable String packageName){
         return packageService.getPackage(packageName);
     }
+    @GetMapping(value = "/available", produces = "application/json")
+    public ResponseEntity<CustomResponse> getAvailablePackages(){
+        return packageService.getPackagesAvailable();
+    }
 }
