@@ -16,21 +16,26 @@ public class UserDTO {
     private Integer id;
     @Email(message = "Correo electrónico no válido")
     @Pattern(regexp = "^[a-zA-Z0-9_.+-]+@gmail\\.[a-zA-Z]{2,}$", message = "El correo electrónico debe ser de Gmail")
+    @Length(max = 30, message = "El correo no debe tener más de 30 caracteres")
     private String email;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotEmpty(message = "La contraseña no puede estar en blanco")
     @Length(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El nombre no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]+$", message = "El nombre no debe contener caracteres especiales")
+    @Length(max = 20 , message = "El nombre no debe tener más de 20 caracteres")
     @NotEmpty(message = "El nombre es requerido")
     private String name;
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El apellido no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]+$", message = "El apellido no debe contener caracteres especiales")
+    @Length(max = 20 , message = "El apellido no debe tener más de 20 caracteres")
     @NotEmpty(message = "El apellido es requerido")
     private String lastname;
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El apellido no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-ZñÑ ]+$", message = "El apellido no debe contener caracteres especiales")
+    @Length(max = 20 , message = "El apellido no debe tener más de 20 caracteres")
     @NotEmpty(message = "El apellido es requerido")
     private String surname;
     @Pattern(regexp = "^[0-9]+$", message = "El telefono no debe contener caracteres especiales")
+    @Length(max = 15 , message = "El telefono no debe tener más de 15 caracteres")
     @NotEmpty(message = "El telefono es requerido")
     private String phone;
 }

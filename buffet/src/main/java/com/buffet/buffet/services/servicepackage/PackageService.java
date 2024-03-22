@@ -14,6 +14,7 @@ import com.buffet.buffet.services.servicepackage.mapperpackage.MapperPackage;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class PackageService {
     private final CategoryRepository categoryRepository;
     private final StatusRepository statusRepository;
     private final PackageImageRepository packageImageRepository;
+    private Environment env;
+
     @Autowired
 
     public PackageService(ServicePackageRepository packageRepository, CategoryRepository categoryRepository,
@@ -51,7 +54,7 @@ public class PackageService {
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre del paquete ya ha sido registrado"));
         }
 
-        Optional<Status> status = statusRepository.findByStatusName("enable");
+        Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable", "to_package");
         if (status.isEmpty()) {
             log.error("Status invalido en registrar paquete");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -107,7 +110,7 @@ public class PackageService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
-        Optional<Status> statusExist = statusRepository.findByStatusName(updateStatus.getStatus());
+        Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(),"to_package");
     if (statusExist.isPresent()){
         ServicePackage packageUpdate = this.packageRepository.findByPackageName(updateStatus.getName());
         if(packageUpdate==null){
