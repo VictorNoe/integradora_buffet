@@ -14,6 +14,7 @@ import com.buffet.buffet.model.useraccount.UserAccount;
 import com.buffet.buffet.model.useraccount.UserAccountRepository;
 import com.buffet.buffet.model.usertype.UserType;
 import com.buffet.buffet.model.usertype.UserTypeRepository;
+import com.buffet.buffet.services.orders.mapperorder.MapperOrder;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,15 +154,26 @@ public class OrderService {
     public ResponseEntity<CustomResponse> countAllOrdersRequired(){
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.countOrderByStatus_StatusName("required"),false,200,"OK"));
     }
+
+    @Transactional(readOnly = true)
+    public ResponseEntity<CustomResponse> findAllByEmailOrder(String emailAllOrder) {
+        if (this.userAccountRepository.existsByEmail(emailAllOrder)) {
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAllByUserAccountEmail(emailAllOrder), false, 200, "OK"));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
+        }
+
+    }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> findAllOrdersRequired() {
         Optional<Status> status = this.statusRepository.findByStatusName("required");
 
         if (status.isPresent()) {
-            List<Order> orders = this.orderRepository.findByStatus(status.get());
+            List<Order> orders = this.orderRepository.findAllByStatus(status.get());
             if (!orders.isEmpty()) {
+                List<OrderDTO> dtoList = MapperOrder.mapOrderToOrderDTOs(orders);
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(new CustomResponse(orders, false, HttpStatus.OK.value(), "OK orders"));
+                        .body(new CustomResponse(dtoList, false, HttpStatus.OK.value(), "OK orders"));
             } else {
                 log.info("No se encontraron órdenes con el estado requerido");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -174,15 +186,6 @@ public class OrderService {
         }
     }
 
-    @Transactional(readOnly = true)
-    public ResponseEntity<CustomResponse> findAllByEmailOrder(String emailAllOrder) {
-        if (this.userAccountRepository.existsByEmail(emailAllOrder)) {
-            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(this.orderRepository.findAllByUserAccountEmail(emailAllOrder), false, 200, "OK"));
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse(null,true,HttpStatus.NOT_FOUND.value(), "Orden invalida"));
-        }
-
-    }
 
     public String generateRandomOrderNumber() {
         int randomNumber = 10000 + random.nextInt(90000);

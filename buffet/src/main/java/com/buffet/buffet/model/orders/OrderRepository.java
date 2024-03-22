@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order, UUID> {
     Order findByNumOrder(String numOrder);
-    List<Order> findByStatus(Status status);
+    List<Order> findAllByStatus(Status status);
     List<Order>  findAllByUserAccountEmail(String email);
     int countOrderByStatus_StatusName(String status);
 }
