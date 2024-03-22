@@ -12,8 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
@@ -45,7 +43,6 @@ public class OrderDTO {
     private String numOrder;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String status;
-    private Date orderDate;
     private String userEmail;
     private String packageName;
 
