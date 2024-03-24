@@ -117,7 +117,7 @@ public class OrderService {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus) {
-        Optional<Status> existStatus = this.statusRepository.findByStatusName(updateStatus.getStatus());
+        Optional<Status> existStatus = this.statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(), "to_order");
         if (existStatus.isPresent()) {
             Order orderUpdate = this.orderRepository.findByNumOrder(updateStatus.getName());
             if (orderUpdate != null) {
@@ -171,7 +171,7 @@ public class OrderService {
     }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> findAllOrdersRequired() {
-        Optional<Status> status = this.statusRepository.findByStatusName("required");
+        Optional<Status> status = this.statusRepository.findByStatusNameAndStatusDescription("required", "to_order");
 
         if (status.isPresent()) {
             List<Order> orders = this.orderRepository.findAllByStatus(status.get());

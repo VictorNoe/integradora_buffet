@@ -56,7 +56,7 @@ public class UserAccountServices {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Usuario invalido"));
             }
-            Optional<Status> status = statusRepository.findByStatusName("enable");
+            Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable","to_user");
             if(status.isPresent()){
 
                 userInfoModel.setFkUserType(userType.get());
@@ -133,7 +133,7 @@ public class UserAccountServices {
     }
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
-        Optional<Status> statusExist = statusRepository.findByStatusName(updateStatus.getStatus());
+        Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(),"to_user");
         if (statusExist.isPresent()){
             UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName());
             if(userUpdate==null){

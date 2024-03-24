@@ -1,5 +1,6 @@
 package com.buffet.buffet.model.worker;
 import com.buffet.buffet.model.userinfo.UserInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
@@ -34,6 +35,7 @@ public class Worker {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String workerPassword;
     @Column(name = "start_hour",nullable = false)
+    @JsonFormat(pattern="HH:mm:ss")
     private Time startHour;
     @Column(name = "end_hour",nullable = false)
     private Time endHour;
