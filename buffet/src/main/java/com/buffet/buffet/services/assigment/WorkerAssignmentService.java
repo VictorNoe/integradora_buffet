@@ -41,6 +41,7 @@ public class WorkerAssignmentService {
                 WorkerAssignment workerAssignmentSaved = new WorkerAssignment();
                 workerAssignmentSaved.setPackageOrder(existOrder);
                 workerAssignmentSaved.setWorker(existUser);
+                workerAssignmentSaved.setAssignmentDate(existOrder.getOrderDate());
                 return ResponseEntity.status(HttpStatus.CREATED).body(new CustomResponse(this.workerAssignmentRepository.save(workerAssignmentSaved),false,HttpStatus.CREATED.value(), "Orden asignada"));
             }else {
                 log.error("No existe el trabajador: "+assignmentDTO.getNumOrder());

@@ -2,6 +2,7 @@ package com.buffet.buffet.model.assigment;
 
 import com.buffet.buffet.model.orders.Order;
 import com.buffet.buffet.model.worker.Worker;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Id;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -25,7 +26,8 @@ public class WorkerAssignment {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @Column(name = "id_worker_assigment",length = 16)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(name = "id_worker_assignment",nullable = false)
     private UUID idWorkerAssignment;
     @Column(name = "assignment_date",nullable = false)
     private Date assignmentDate;
@@ -39,13 +41,13 @@ public class WorkerAssignment {
     @JoinColumn(name = "fk_package_order")
     private Order packageOrder;
     @PrePersist
-    private void generateUUID() {
+    private void prePresist() {
+        if (this.idWorkerAssignment == null) {
+            this.idWorkerAssignment = UUID.randomUUID();
+        }
         Date currentDateAssignment = new Date();
         if (this.createdAt==null){
             this.createdAt=currentDateAssignment;
-        }
-        if (this.idWorkerAssignment == null) {
-            this.idWorkerAssignment = UUID.randomUUID();
         }
     }
 }

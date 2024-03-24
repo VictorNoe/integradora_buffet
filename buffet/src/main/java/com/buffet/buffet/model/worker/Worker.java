@@ -24,7 +24,6 @@ public class Worker {
     @Id
     @GeneratedValue(generator = "UUID")
     @Column(name = "id_worker",length = 16)
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UUID idWorker;
     @Column(name = "numWorker",nullable = false)
     private String numWorker;

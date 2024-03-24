@@ -10,7 +10,7 @@ import java.sql.Time;
 
 @Data
 public class WorkerDto {
-    @Pattern(regexp = "^[a-zA-Z ]+$", message = "El numero de trabajador no debe contener caracteres especiales")
+    @Pattern(regexp = "^[a-zA-Z0-9 ]+$", message = "El numero de trabajador no debe contener caracteres especiales")
     @NotEmpty(message = "El numero de trabajador es requerido")
     private String numWorker;
 @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
