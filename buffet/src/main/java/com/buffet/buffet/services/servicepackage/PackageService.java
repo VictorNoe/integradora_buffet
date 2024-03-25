@@ -82,28 +82,42 @@ public class PackageService {
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updatePackage(PackageDTO packageDTO) {
         ServicePackage packageUpdate = packageRepository.findByPackageName(packageDTO.getPackageName());
-        if(packageUpdate==null){
+        if (packageUpdate == null) {
             log.error("El nombre del paquete a actualizar no existe");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "El nombre del paquete a actualizar es invalido"));
         }
-        Optional<Status> status = statusRepository.findByStatusName("enable");
-        if(status.isPresent()){
-            Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
-            if (category.isPresent()){
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new CustomResponse(packageRepository.saveAndFlush(saveOrUpdatePackage(packageDTO, status, category, packageUpdate)), false, HttpStatus.CREATED.value(), "Paquete actualizado"));
-            }else {
-                log.error("Categoria no existe en actualizar paquete");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoria no valida en actualizar paquete"));
-            }
-        }else {
+
+        Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable", "to_package");
+        if (status.isEmpty()) {
             log.error("Status no existe en actualizar paquete");
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status no valido en actualizar paquete"));
         }
+
+        Optional<Category> category = categoryRepository.findByCategoryName(packageDTO.getCategory());
+        if (category.isEmpty()) {
+            log.error("Categoría no existe en actualizar paquete");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Categoría no valida en actualizar paquete"));
+        }
+
+        packageUpdate = saveOrUpdatePackage(packageDTO, status, category, packageUpdate);
+        ServicePackage packageSaved = packageRepository.saveAndFlush(packageUpdate);
+
+        if (packageDTO.getImages() != null && packageDTO.getImages().length > 0) {
+            packageImageRepository.deleteByServicePackage(packageUpdate);
+            List<PackageImage> imageList = Arrays.stream(packageDTO.getImages())
+                    .map(imageDTO -> new PackageImage(null, imageDTO.getImage(), imageDTO.getNumImage(), packageSaved))
+                    .toList();
+            packageUpdate.setPackageImages(imageList);
+            packageImageRepository.saveAll(imageList);
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new CustomResponse(packageUpdate, false, HttpStatus.CREATED.value(), "Paquete actualizado"));
     }
+
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
         Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(),"to_package");
