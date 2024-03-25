@@ -14,7 +14,6 @@ import com.buffet.buffet.services.servicepackage.mapperpackage.MapperPackage;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,14 +69,12 @@ public class PackageService {
 
 
         ServicePackage packageSaved= packageRepository.save( saveOrUpdatePackage(packageDTO, status, category, packageSave));
-        ServicePackage finalPackageSaved = packageSaved;
         List<PackageImage> imageList = Arrays.stream(packageDTO.getImages())
-                .map(imageDTO -> new PackageImage(null,imageDTO.getImage(), imageDTO.getNumImage(), finalPackageSaved))
+                .map(imageDTO -> new PackageImage(null,imageDTO.getImage(), imageDTO.getNumImage(), packageSaved))
                 .toList();
 
         packageSaved.setPackageImages(imageList);
         this.packageImageRepository.saveAllAndFlush(imageList);
-        packageSaved = packageRepository.save(packageSaved);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CustomResponse(packageSaved, false, HttpStatus.CREATED.value(), "Paquete registrado"));
     }
