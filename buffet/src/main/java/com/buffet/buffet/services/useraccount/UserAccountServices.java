@@ -132,7 +132,7 @@ public class UserAccountServices {
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(userAccountRepository.findByEmail(email),false,200,"OK"));
     }
     @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<CustomResponse> updateStatus(UpdateStatus updateStatus){
+    public ResponseEntity<CustomResponse> updateStatusUser(UpdateStatus updateStatus){
         Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(),"to_user");
         if (statusExist.isPresent()){
             UserAccount userUpdate = this.userAccountRepository.findByEmail(updateStatus.getName());

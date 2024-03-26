@@ -104,6 +104,8 @@ CREATE TABLE IF NOT EXISTS worker (
     start_hour time NOT NULL,
     end_hour time NOT NULL,
     fk_user_info binary(16) NOT NULL,
+    fk_status binary(16),
+    FOREIGN KEY (fk_status) REFERENCES status(id_status),
     FOREIGN KEY (fk_user_info) REFERENCES user_info(id_user_info)
     );
 CREATE TABLE IF NOT EXISTS worker_assignment (

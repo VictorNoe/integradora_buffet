@@ -8,6 +8,8 @@ INSERT INTO status (id_status, status_name,status_description) VALUES
                                                 (X'2765C5E1D83F11EE944BD812655E2910', 'disabled','to_user'),
                                                 (X'2765C5E1D83F11EE944BD812655E2809', 'enable','to_package'),
                                                 (X'2765C5E1D83F11EE944BD812655E2810', 'disabled','to_package'),
+                                                (X'2765C5E1D83F11EE944BD812655E2709', 'enable','to_worker'),
+                                                (X'2765C5E1D83F11EE944BD812655E2710', 'disabled','to_worker'),
                                                 (X'2765C5E1D83F11EE944BD812655E2911', 'accepted','to_order'),
                                                 (X'2765C5E1D83F11EE944BD812655E2811', 'process','to_order'),
                                                 (X'2765C5E1D83F11EE944BD812655E2912', 'sold','to_order'),
@@ -60,8 +62,8 @@ VALUES (X'2765C5E1D83F11EE944BD812655E2942', '123ABC', NOW(), 100.00, NOW(), X'2
        (X'2765C5E1D83F11EE944BD812655E2943', '456DEF', NOW(), 150.00, NOW(), X'2765C5E1D83F11EE944BD812655E2919', X'2765C5E1D83F11EE944BD812655E2925', X'2765C5E1D83F11EE944BD812655E2913', X'2765C5E1D83F11EE944BD812655E2941', X'2765C5E1D83F11EE944BD812655E2917');
 
 
-INSERT INTO worker (id_worker, num_worker,locked_worker,worker_password, start_hour, end_hour, fk_user_info) VALUES
-                                                                                                    (X'2765C5E1D83F11EE944BD812655E2944', 'W456',false, 'Pass123!', '09:00:00', '18:00:00', X'2765C5E1D83F11EE944BD812655E2915');
+INSERT INTO worker (id_worker, num_worker,locked_worker,worker_password, start_hour, end_hour, fk_user_info,fk_status) VALUES
+                                                                                                    (X'2765C5E1D83F11EE944BD812655E2944', 'W456',false, 'Pass123!', '09:00:00', '18:00:00', X'2765C5E1D83F11EE944BD812655E2915',X'2765C5E1D83F11EE944BD812655E2709');
 
 INSERT INTO worker_assignment (id_worker_assignment, fk_worker, fk_package_order, assignment_date,created_at) VALUES
                                                                                                        (X'2765C5E1D83F11EE944BD812655E2945', X'2765C5E1D83F11EE944BD812655E2944', X'2765C5E1D83F11EE944BD812655E2942', NOW(),NOW()),

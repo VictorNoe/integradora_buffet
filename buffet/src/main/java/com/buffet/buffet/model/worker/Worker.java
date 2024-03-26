@@ -1,4 +1,5 @@
 package com.buffet.buffet.model.worker;
+import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.userinfo.UserInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,6 +43,9 @@ public class Worker {
     @OneToOne
     @JoinColumn(name = "fk_user_info", referencedColumnName = "id_user_info")
     private UserInfo fkUserInfo;
+    @OneToOne(optional = false, targetEntity = Status.class)
+    @JoinColumn(name = "fk_status", referencedColumnName = "id_status")
+    private Status fkStatus;
     @PrePersist
     private void generateUUID() {
         if (this.idWorker == null) {

@@ -3,6 +3,7 @@ package com.buffet.buffet.services.worker;
 import com.buffet.buffet.controller.worker.workerdto.WorkerDto;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.status.StatusRepository;
+import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.model.userinfo.UserInfo;
 import com.buffet.buffet.model.userinfo.UserInfoRepository;
 import com.buffet.buffet.model.usertype.UserType;
@@ -62,9 +63,8 @@ public class WorkerService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Tipo de usuario invalido"));
             }
-            Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable","to_user");
+            Optional<Status> status = statusRepository.findByStatusNameAndStatusDescription("enable","to_worker");
             if(status.isPresent()){
-
                 userInfoModel.setFkUserType(userType.get());
                 userInfoModel.setName(workerDto.getName());
                 userInfoModel.setLastname(workerDto.getLastname());
@@ -75,6 +75,7 @@ public class WorkerService {
                 worker.setEndHour(workerDto.getEndHour());
                 worker.setNumWorker(workerDto.getNumWorker());
                 worker.setWorkerPassword(workerDto.getWorkerPassword());
+                worker.setFkStatus(status.get());
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new CustomResponse(workerRepository.save(worker), false, HttpStatus.CREATED.value(), "Trabajador registrado correctamente"));
             }else {
@@ -89,5 +90,22 @@ public class WorkerService {
                     HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando registrar usuario "+e.getMessage()));
         }
 
+    }
+    @Transactional(rollbackFor = {SQLException.class})
+    public ResponseEntity<CustomResponse> updateStatusWorker(UpdateStatus updateStatus){
+        Optional<Status> statusExist = statusRepository.findByStatusNameAndStatusDescription(updateStatus.getStatus(),"to_worker");
+        if (statusExist.isPresent()){
+            Worker workerUpdate = this.workerRepository.findByNumWorker(updateStatus.getName());
+            if(workerUpdate==null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(new CustomResponse(null, true, HttpStatus.BAD_REQUEST.value(), "Trabajador invalido"));
+            }
+            workerUpdate.setFkStatus(statusExist.get());
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse(workerRepository.saveAndFlush(workerUpdate),false,200,"Trabajador actualizado"));
+        }else {
+            log.error("Status inexistente");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new CustomResponse(null, true, HttpStatus.NOT_FOUND.value(), "Status invalido"));
+        }
     }
 }

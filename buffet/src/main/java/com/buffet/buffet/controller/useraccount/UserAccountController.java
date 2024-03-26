@@ -32,7 +32,7 @@ public class UserAccountController {
 
     @PutMapping(value = "/updateStatus", produces = "application/json")
     public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
-        return userAccountService.updateStatus(updateStatus);
+        return userAccountService.updateStatusUser(updateStatus);
     }
     @GetMapping(value = "/getClients", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllClients( ){

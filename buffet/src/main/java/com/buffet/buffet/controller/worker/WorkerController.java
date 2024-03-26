@@ -1,6 +1,7 @@
 package com.buffet.buffet.controller.worker;
 
 import com.buffet.buffet.controller.worker.workerdto.WorkerDto;
+import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.services.worker.WorkerService;
 import com.buffet.buffet.utils.CustomResponse;
 import jakarta.validation.Valid;
@@ -21,6 +22,10 @@ public class WorkerController {
     @PostMapping(value = "/registerWorker", produces = "application/json")
     public ResponseEntity<CustomResponse> registerWorker(@Valid @RequestBody WorkerDto workerDto) {
         return this.workerService.registerWorker(workerDto);
+    }
+    @PutMapping(value = "/updateStatus", produces = "application/json")
+    public ResponseEntity<CustomResponse> updateStatus(@Valid @RequestBody UpdateStatus updateStatus){
+        return workerService.updateStatusWorker(updateStatus);
     }
     @GetMapping(value = "/getWorkers", produces = "application/json")
     public ResponseEntity<CustomResponse> getAllWorkers( ){
