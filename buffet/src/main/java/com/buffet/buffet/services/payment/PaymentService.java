@@ -6,10 +6,10 @@ import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Slf4j
 @Service
@@ -17,34 +17,34 @@ import java.util.Locale;
 public class PaymentService {
 
     private final APIContext apiContext;
-    public Payment createPayment(Double total,String currency,String method,String intent,String description,String cancelUrl,
-    String successUrl) throws PayPalRESTException {
-        Amount amount = new Amount();
-        amount.setCurrency(currency);
-        amount.setTotal(String.format(Locale.forLanguageTag(currency),"%2f",total));
+    public Payment createPayment(Double total, String currency, String method,
+                                 String intent, String description) throws PayPalRESTException {
+        Amount theAmount = new Amount();
+        theAmount.setCurrency(currency);
+        total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        theAmount.setTotal(String.format("%.2f", total));
 
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
-        transaction.setAmount(amount);
+        transaction.setAmount(theAmount);
 
-        List<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(transaction);
+        List<Transaction> theTransactions = new ArrayList<>();
+        theTransactions.add(transaction);
 
-        Payer payer = new Payer();
-        payer.setPaymentMethod(method);
+        Payer thePayer = new Payer();
+        thePayer.setPaymentMethod(method);
 
-        Payment payment = new Payment();
-        payment.setIntent(intent);
-        payment.setPayer(payer);
-        payment.setTransactions(transactionList);
+        Payment thePayment = new Payment();
+        thePayment.setIntent(intent);
+        thePayment.setTransactions(theTransactions);
+        thePayment.setPayer(thePayer);
 
-        RedirectUrls redirectUrls = new RedirectUrls();
-        redirectUrls.setCancelUrl(cancelUrl);
-        redirectUrls.setReturnUrl(successUrl);
+        RedirectUrls theRedirectUrls = new RedirectUrls();
+        theRedirectUrls.setCancelUrl("http://localhost:5173/cancelarPago");
+        theRedirectUrls.setReturnUrl("http://localhost:5173/pagar");
+        thePayment.setRedirectUrls(theRedirectUrls);
 
-        payment.setRedirectUrls(redirectUrls);
-
-        return payment.create(apiContext);
+        return thePayment.create(apiContext);
     }
     public Payment executePayment(String paymentId,String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
