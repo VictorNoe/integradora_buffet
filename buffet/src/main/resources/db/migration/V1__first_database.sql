@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS user_account (
     id_user_account binary(16) PRIMARY KEY NOT NULL ,
     email VARCHAR(30) UNIQUE NOT NULL,
     user_password VARCHAR(100) NOT NULL,
-    token VARCHAR(100) NOT NULL,
+    token VARCHAR(500) NOT NULL,
     locked_user boolean,
     login_time DATETIME,
     logout_time DATETIME,

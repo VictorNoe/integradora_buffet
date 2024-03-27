@@ -1,7 +1,6 @@
 package com.buffet.buffet.controller.useraccount;
 
 import com.buffet.buffet.controller.useraccount.useraccountdto.UserDTO;
-import com.buffet.buffet.model.authrequest.AuthRequest;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.services.useraccount.UserAccountServices;
 import com.buffet.buffet.utils.CustomResponse;
@@ -24,10 +23,6 @@ public class UserAccountController {
     @PostMapping(value = "/register", produces = "application/json")
     public ResponseEntity<CustomResponse> register(@Valid @RequestBody UserDTO user) {
         return userAccountService.registerUser(user);
-    }
-    @PostMapping(value = "/login", produces = "application/json")
-    public ResponseEntity<CustomResponse> login(@RequestBody AuthRequest authRequest) {
-        return userAccountService.login(authRequest);
     }
 
     @PutMapping(value = "/updateStatus", produces = "application/json")

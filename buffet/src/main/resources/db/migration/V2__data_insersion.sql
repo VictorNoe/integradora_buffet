@@ -20,8 +20,8 @@ INSERT INTO user_info (id_user_info, name, lastname, surname, phone, created_at,
                                                                                                                 (X'2765C5E1D83F11EE944BD812655E2916', 'Karel', 'Flores', 'Salinas', '987654321', NOW(), NULL, X'2765C5E1D83F11EE944BD812655E2908');
 
 INSERT INTO user_account (id_user_account, email, user_password, token,locked_user, login_time, logout_time, fk_user_info, fk_status) VALUES
-                                                                                                                              (X'2765C5E1D83F11EE944BD812655E2918', 'c@gmail.com', 'Pass123!', 'admin123',false, NOW(), NULL, X'2765C5E1D83F11EE944BD812655E2914', X'2765C5E1D83F11EE944BD812655E2909'),
-                                                                                                                              (X'2765C5E1D83F11EE944BD812655E2919', 'k@gmail.com', 'Pass123!', 'public123',false, NOW(), NULL, X'2765C5E1D83F11EE944BD812655E2916', X'2765C5E1D83F11EE944BD812655E2909');
+                                                                                                                              (X'2765C5E1D83F11EE944BD812655E2918', 'c@gmail.com', '$2a$10$gQZpuhnQLen9pY22v93HKu67T7G4sYfzieWakWrbY1AD7P70BlQ42', 'admin123',true, NOW(), NULL, X'2765C5E1D83F11EE944BD812655E2914', X'2765C5E1D83F11EE944BD812655E2909'),
+                                                                                                                              (X'2765C5E1D83F11EE944BD812655E2919', 'k@gmail.com', '$2a$10$gQZpuhnQLen9pY22v93HKu67T7G4sYfzieWakWrbY1AD7P70BlQ42', 'public123',true, NOW(), NULL, X'2765C5E1D83F11EE944BD812655E2916', X'2765C5E1D83F11EE944BD812655E2909');
 INSERT INTO address (id_address, street, district , postal_code, city, comments,created_at, fk_user_account) VALUES
                                                                                                      (X'2765C5E1D83F11EE944BD812655E2916', 'Calle Clavel', 'La matona', 12345, 'Cuernavaca', 'Llama antes de llegar',NOW(), X'2765C5E1D83F11EE944BD812655E2919'),
                                                                                                      (X'2765C5E1D83F11EE944BD812655E2917', 'Calle vela', 'Flores Magon', 54321, 'Temixco', 'Llamame', NOW(),X'2765C5E1D83F11EE944BD812655E2919');
@@ -63,7 +63,7 @@ VALUES (X'2765C5E1D83F11EE944BD812655E2942', '123ABC', NOW(), 100.00, NOW(), X'2
 
 
 INSERT INTO worker (id_worker, num_worker,locked_worker,worker_password, start_hour, end_hour, fk_user_info,fk_status) VALUES
-                                                                                                    (X'2765C5E1D83F11EE944BD812655E2944', 'W456',false, 'Pass123!', '09:00:00', '18:00:00', X'2765C5E1D83F11EE944BD812655E2915',X'2765C5E1D83F11EE944BD812655E2709');
+                                                                                                    (X'2765C5E1D83F11EE944BD812655E2944', 'W456',true, '$2a$10$gQZpuhnQLen9pY22v93HKu67T7G4sYfzieWakWrbY1AD7P70BlQ42', '09:00:00', '18:00:00', X'2765C5E1D83F11EE944BD812655E2915',X'2765C5E1D83F11EE944BD812655E2709');
 
 INSERT INTO worker_assignment (id_worker_assignment, fk_worker, fk_package_order, assignment_date,created_at) VALUES
                                                                                                        (X'2765C5E1D83F11EE944BD812655E2945', X'2765C5E1D83F11EE944BD812655E2944', X'2765C5E1D83F11EE944BD812655E2942', NOW(),NOW()),

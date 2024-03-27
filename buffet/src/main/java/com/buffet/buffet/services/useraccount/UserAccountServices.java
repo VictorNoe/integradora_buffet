@@ -1,6 +1,5 @@
 package com.buffet.buffet.services.useraccount;
 import com.buffet.buffet.controller.useraccount.useraccountdto.UserDTO;
-import com.buffet.buffet.model.authrequest.AuthRequest;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
 import com.buffet.buffet.model.status.Status;
 import com.buffet.buffet.model.status.StatusRepository;
@@ -13,15 +12,14 @@ import com.buffet.buffet.model.usertype.UserTypeRepository;
 import com.buffet.buffet.utils.CustomResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Transactional
@@ -32,14 +30,17 @@ public class UserAccountServices {
     private final UserInfoRepository userInfoRepository;
     private final UserTypeRepository userTypeRepository;
     private final StatusRepository statusRepository;
+    private final PasswordEncoder encoder;
     @Autowired
 
-    public UserAccountServices(UserAccountRepository userAccountRepository, UserInfoRepository userInfoRepository, UserTypeRepository userTypeRepository, StatusRepository statusRepository) {
+    public UserAccountServices(UserAccountRepository userAccountRepository, UserInfoRepository userInfoRepository, UserTypeRepository userTypeRepository, StatusRepository statusRepository, PasswordEncoder encoder) {
         this.userAccountRepository = userAccountRepository;
         this.userInfoRepository = userInfoRepository;
         this.userTypeRepository = userTypeRepository;
         this.statusRepository = statusRepository;
+        this.encoder = encoder;
     }
+
 
     @Transactional(rollbackFor = {SQLException.class})
     public ResponseEntity<CustomResponse> registerUser(UserDTO userdto) {
@@ -66,8 +67,9 @@ public class UserAccountServices {
                 userInfoModel.setPhone(userdto.getPhone());
                 userAccountModel.setFkUserInfo(userInfoRepository.save(userInfoModel));
                 userAccountModel.setToken("public");
+                userAccountModel.setLocked(true);
                 userAccountModel.setEmail(userdto.getEmail());
-                userAccountModel.setUserPassword(userdto.getPassword());
+                userAccountModel.setUserPassword(encoder.encode(userdto.getPassword()));
                 userAccountModel.setFkStatus(status.get());
                 return ResponseEntity.status(HttpStatus.CREATED)
                         .body(new CustomResponse(userAccountRepository.save(userAccountModel), false, HttpStatus.CREATED.value(), "Usuario registrado"));
@@ -85,34 +87,6 @@ public class UserAccountServices {
 
     }
 
-    @Transactional(rollbackFor = {SQLException.class})
-    public ResponseEntity<CustomResponse> login(AuthRequest authRequest) {
-        try {
-            log.info("Auth request ->"+authRequest.toString());
-            UserAccount optionalUserAccount = userAccountRepository.findByEmail(authRequest.getEmail());
-            if (optionalUserAccount!=null) {
-                boolean existsLogin = Objects.equals(optionalUserAccount.getUserPassword(), authRequest.getPassword());
-                if (existsLogin) {
-                    String accessToken="1234";
-                    optionalUserAccount.setToken(accessToken);
-                    userAccountRepository.save(optionalUserAccount);
-                    return ResponseEntity.ok()
-                            .header(HttpHeaders.AUTHORIZATION, "Bearer "+accessToken)
-                            .body(new CustomResponse(userAccountRepository.save(optionalUserAccount), false, HttpStatus.OK.value(), "Sesión iniciada"));
-                } else {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                            new CustomResponse(null, true, HttpStatus.UNAUTHORIZED.value(), "Credenciales inválidas"));
-                }
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CustomResponse(null, true,
-                        HttpStatus.UNAUTHORIZED.value(), "El correo proporcionado no está registrado"));
-            }
-        } catch (Exception e) {
-            log.error("Error al hacer login",e);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new CustomResponse(e, true, HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error intentando hacer login"));
-        }
-    }
     @Transactional(readOnly = true)
     public ResponseEntity<CustomResponse> getAllClients() {
         List<UserAccount> workersList = userAccountRepository.findByFkUserInfo_FkUserType_TypeName("Public");
