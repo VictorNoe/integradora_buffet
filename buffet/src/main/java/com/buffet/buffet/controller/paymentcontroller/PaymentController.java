@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/payment")
+@CrossOrigin(origins = {"http://localhost:5173/"})
 @RequiredArgsConstructor
 @Slf4j
 public class PaymentController {
@@ -22,11 +23,10 @@ public class PaymentController {
     public static final String successUrl = "http://localhost:8080/payment/success";
     public static final String cancelUrl = "http://localhost:8080/payment/cancel";
 
-    @PostMapping("/pay")
+    @PostMapping(value = "/pay", produces = "application/json")
     public String payment(@RequestBody PaymentDto theOrder) {
         try {
-            Payment thePayment = paymentService.createPayment(theOrder.getPrice(), theOrder.getCurrency(),
-                    theOrder.getMethod(), theOrder.getIntent(), theOrder.getDescription());
+            Payment thePayment = paymentService.createPayment(theOrder.getPrice());
             for (Links links: thePayment.getLinks()){
                 if(links.getRel().equals("approval_url")){
                     System.out.println(links.getHref());
@@ -37,7 +37,7 @@ public class PaymentController {
         catch (PayPalRESTException payPalRESTException) {
             log.error(payPalRESTException.getMessage());
         }
-        return "redirect:/";
+        return null;
     }
 
     @GetMapping("/success")

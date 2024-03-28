@@ -10,9 +10,5 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class PaymentDto {
-    private double price = 50;
-    private String currency = "USD";
-    private String method ="Paypal";
-    private String intent = "SALE";
-    private String description = "Pay";
+    private double price;
 }

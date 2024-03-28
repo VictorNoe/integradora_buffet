@@ -17,31 +17,30 @@ import java.util.List;
 public class PaymentService {
 
     private final APIContext apiContext;
-    public Payment createPayment(Double total, String currency, String method,
-                                 String intent, String description) throws PayPalRESTException {
+    public Payment createPayment(Double total) throws PayPalRESTException {
         Amount theAmount = new Amount();
-        theAmount.setCurrency(currency);
+        theAmount.setCurrency("USD");
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
         theAmount.setTotal(String.format("%.2f", total));
 
         Transaction transaction = new Transaction();
-        transaction.setDescription(description);
+        transaction.setDescription("Pago realizado");
         transaction.setAmount(theAmount);
 
         List<Transaction> theTransactions = new ArrayList<>();
         theTransactions.add(transaction);
 
         Payer thePayer = new Payer();
-        thePayer.setPaymentMethod(method);
+        thePayer.setPaymentMethod("Paypal");
 
         Payment thePayment = new Payment();
-        thePayment.setIntent(intent);
+        thePayment.setIntent("sale");
         thePayment.setTransactions(theTransactions);
         thePayment.setPayer(thePayer);
 
         RedirectUrls theRedirectUrls = new RedirectUrls();
         theRedirectUrls.setCancelUrl("http://localhost:5173/cancelarPago");
-        theRedirectUrls.setReturnUrl("http://localhost:5173/pagar");
+        theRedirectUrls.setReturnUrl("http://localhost:5173/s");
         thePayment.setRedirectUrls(theRedirectUrls);
 
         return thePayment.create(apiContext);

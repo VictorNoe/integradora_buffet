@@ -3,6 +3,7 @@ package com.buffet.buffet.services.orders;
 import com.buffet.buffet.controller.order.orderdto.OrderDTO;
 import com.buffet.buffet.model.address.Address;
 import com.buffet.buffet.model.address.AddressRepository;
+import com.buffet.buffet.model.payment.PaymentRepository;
 import com.buffet.buffet.model.servicepackage.ServicePackage;
 import com.buffet.buffet.model.servicepackage.ServicePackageRepository;
 import com.buffet.buffet.model.updatestatus.UpdateStatus;
@@ -37,12 +38,14 @@ public class OrderService {
     private final UserTypeRepository userTypeRepository;
     private final AddressRepository addressRepository;
     private final UserInfoRepository userInfoRepository;
+    private final PaymentRepository paymentRepository;
     Random random = new Random();
 
     @Autowired
 
     public OrderService(OrderRepository orderRepository, ServicePackageRepository packageRepository, UserAccountRepository userAccountRepository,
-                        StatusRepository statusRepository, UserTypeRepository userTypeRepository, AddressRepository addressRepository, UserInfoRepository userInfoRepository) {
+                        StatusRepository statusRepository, UserTypeRepository userTypeRepository,
+                        AddressRepository addressRepository, UserInfoRepository userInfoRepository,PaymentRepository paymentRepository) {
         this.orderRepository = orderRepository;
         this.packageRepository = packageRepository;
         this.userAccountRepository = userAccountRepository;
@@ -50,6 +53,7 @@ public class OrderService {
         this.userTypeRepository = userTypeRepository;
         this.addressRepository =addressRepository;
         this.userInfoRepository = userInfoRepository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Transactional(rollbackFor = {SQLException.class})
